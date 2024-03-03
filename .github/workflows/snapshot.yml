@@ -1,0 +1,30 @@
+name: build and publish a snapshot
+
+on:
+  push:
+    branches:
+      - main
+      - 'snapshot/*'
+      - 'kotlin-*'
+    paths-ignore:
+      - '**.md'
+      - '**.adoc'
+      - '**/.gitignore'
+      - './github/**'
+      - '!./github/workflow/snapshot.yml'
+
+jobs:
+  build-upload:
+    runs-on: macOS-latest
+    env:
+      SONATYPE_USERNAME: ${{ secrets.sonatype_username }}
+      SONATYPE_PASSWORD: ${{ secrets.sonatype_password }}
+    steps:
+      - name: Setup
+        uses: kosi-libs/kodein-internal-github-actions/setup@main
+      - name: Check
+        run: ./gradlew --stacktrace check
+        shell: bash
+      - name: Upload
+        run: ./gradlew publishAllPublicationsToOssrhStagingRepository -PgitRef=${{ github.ref }} -Psnapshot=true
+        shell: bash

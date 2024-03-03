@@ -1,0 +1,25 @@
+### Gradle ###
+.gradle
+build/
+.gradletasknamecache
+
+### IntelliJ IDEA ###
+.idea
+
+### Mac OS ###
+.DS_Store
+
+### Js ###
+node_modules/
+
+### Android ###
+local.properties
+
+### iOS ###
+xcuserdata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
