@@ -1,6 +1,5 @@
 package org.kodein.emoji.compose
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -12,12 +11,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import org.kodein.emoji.Emoji
-import org.kodein.emoji.codePoints
 import kotlin.math.min
 
 
 @Composable
-internal fun EmojiFontPlaceholder(emoji: Emoji) {
+internal fun EmojiFontPlaceholder(emoji: Emoji, modifier: Modifier) {
     var textSize: TextUnit by remember { mutableStateOf(0.sp) }
     val density = LocalDensity.current
     val textMeasurer = rememberTextMeasurer()
@@ -25,8 +23,7 @@ internal fun EmojiFontPlaceholder(emoji: Emoji) {
     BasicText(
         text = emoji.details.string,
         style = TextStyle(fontSize = textSize, textAlign = TextAlign.Center),
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .onSizeChanged { size ->
                 with (density) {
                     val result = textMeasurer.measure(emoji.details.string, TextStyle(fontSize = size.height.toSp()))
@@ -43,13 +40,13 @@ internal fun EmojiFontPlaceholder(emoji: Emoji) {
 }
 
 @Composable
-internal expect fun PlatformEmojiPlaceholder(emoji: Emoji)
+internal expect fun PlatformEmojiPlaceholder(emoji: Emoji, modifier: Modifier)
 
 @Composable
 public fun NotoImageEmoji(
     emoji: Emoji,
     modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji) }
+    placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji, modifier) }
 ) {
     val download = LocalEmojiDownloader.current
     var svg: SVGImage? by remember { mutableStateOf(null) }
@@ -71,7 +68,7 @@ public fun NotoImageEmoji(
 public fun NotoAnimatedEmoji(
     emoji: Emoji,
     modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji) }
+    placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji, modifier) }
 ) {
     if (!emoji.details.notoAnimated) {
         NotoImageEmoji(emoji, modifier, placeholder)

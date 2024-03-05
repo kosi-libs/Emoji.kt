@@ -8,18 +8,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.*
-import androidx.compose.ui.unit.Density
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import org.kodein.emoji.Emoji
 import org.kodein.emoji.FoundEmoji
-import org.kodein.emoji.codePoints
 import org.kodein.emoji.findEmoji
 
+
+internal expect fun AnnotatedString.Builder.appendNotoPlaceholder(emoji: Emoji, inlineContent: MutableMap<String, InlineTextContent>)
 
 @Composable
 public fun String.withEmoji(): String {
@@ -34,17 +34,11 @@ private fun WithNotoEmoji(
     createInlineTextContent: suspend (FoundEmoji) -> InlineTextContent?
 ) {
     val service = EmojiService.get() ?: return
-    val textMeasurer = rememberTextMeasurer()
-    val density = LocalDensity.current
 
     val all = remember(text) {
         service.finder.findEmoji(text)
             .map { found ->
-                val sizeRatio = platformSizeRatio(found.emoji, textMeasurer, density)
-                found to mutableStateOf(InlineTextContent(
-                    placeholder = Placeholder(sizeRatio.width.em, sizeRatio.height.em, PlaceholderVerticalAlign.Center),
-                    children = { PlatformEmojiPlaceholder(found.emoji) }
-                ))
+                found to mutableStateOf<InlineTextContent?>(null)
             }
             .toList()
     }
@@ -52,10 +46,7 @@ private fun WithNotoEmoji(
     LaunchedEffect(all) {
         all.forEach { (found, inlineTextContent) ->
             launch {
-                val newInlineContent = createInlineTextContent(found)
-                if (newInlineContent != null) {
-                    inlineTextContent.value = newInlineContent
-                }
+                inlineTextContent.value = createInlineTextContent(found)
             }
         }
     }
@@ -65,9 +56,14 @@ private fun WithNotoEmoji(
         var start = 0
         all.forEach { (found, inlineTextContent) ->
             append(text.substring(start, found.start))
-            val inlineContentID = "emoji:${found.emoji}"
-            inlineContent[inlineContentID] = inlineTextContent.value
-            appendInlineContent(inlineContentID)
+            val itc = inlineTextContent.value
+            if (itc != null) {
+                val inlineContentID = "emoji:${found.emoji}"
+                inlineContent[inlineContentID] = itc
+                appendInlineContent(inlineContentID)
+            } else {
+                appendNotoPlaceholder(found.emoji, inlineContent)
+            }
             start = found.end
         }
         append(text.substring(start, text.length))
@@ -98,16 +94,6 @@ public fun WithNotoImageEmoji(
         }
     )
 }
-
-internal fun fontSizeRatio(emoji: Emoji, textMeasurer: TextMeasurer, density: Density): Size {
-    val style = TextStyle(fontSize = 100.sp)
-    val result = textMeasurer.measure(text = emoji.toString(), style = style)
-    val w = with(density) { result.size.width.toFloat() / style.fontSize.toPx() }
-    val h = with(density) { result.size.height.toFloat() / style.fontSize.toPx() }
-    return Size(w, h)
-}
-
-internal expect fun platformSizeRatio(emoji: Emoji, textMeasurer: TextMeasurer, density: Density): Size
 
 @Composable
 public fun WithNotoAnimatedEmoji(

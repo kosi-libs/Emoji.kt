@@ -2,6 +2,7 @@ package org.kodein.emoji.compose
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,6 +24,6 @@ public actual fun WithPlatformEmoji(
 }
 
 @Composable
-internal actual fun PlatformEmojiPlaceholder(emoji: Emoji) {
-    EmojiFontPlaceholder(emoji)
+internal actual fun PlatformEmojiPlaceholder(emoji: Emoji, modifier: Modifier) {
+    EmojiFontPlaceholder(emoji, modifier)
 }

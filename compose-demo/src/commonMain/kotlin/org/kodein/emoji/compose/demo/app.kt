@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import org.kodein.emoji.Emoji
-import org.kodein.emoji.SkinTone.MediumDark
-import org.kodein.emoji.SkinTone.MediumLight
 import org.kodein.emoji.compose.WithNotoAnimatedEmoji
 import org.kodein.emoji.compose.WithPlatformEmoji
 import org.kodein.emoji.compose.withEmoji

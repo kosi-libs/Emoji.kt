@@ -1,7 +1,9 @@
 package org.kodein.emoji.compose
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import kotlinx.browser.window
 import kotlinx.coroutines.await
@@ -30,5 +32,6 @@ public actual fun WithPlatformEmoji(
 }
 
 @Composable
-internal actual fun PlatformEmojiPlaceholder(emoji: Emoji) {
+internal actual fun PlatformEmojiPlaceholder(emoji: Emoji, modifier: Modifier) {
+    Box(modifier)
 }
