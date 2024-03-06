@@ -163,7 +163,7 @@ internal open class SkinTone1EmojiImpl(
                 unicodeVersion = details.unicodeVersion,
                 aliases = details.aliases.map { it + "~${tone.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = false
+                notoAnimated = details.notoAnimated
             ),
             original = this,
             tone1 = tone
@@ -185,7 +185,7 @@ internal open class UnqualifiedSkinTone1EmojiImpl(
                 unicodeVersion = details.unicodeVersion,
                 aliases = details.aliases.map { it + "~${tone.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = false
+                notoAnimated = details.notoAnimated
             ),
             original = this,
             tone1 = tone
@@ -210,7 +210,7 @@ internal class SkinTone2EmojiZWJImpl internal constructor(
                 unicodeVersion = zwjUnicodeVersion,
                 aliases = details.aliases.map { it + "~${tone1.alias},${tone2.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = false
+                notoAnimated = details.notoAnimated
             ),
             original = this,
             tone1 = tone1,
@@ -233,7 +233,7 @@ internal class SkinTone2EmojiImpl internal constructor(
                 unicodeVersion = details.unicodeVersion,
                 aliases = details.aliases.map { it + "~${tone1.alias},${tone2.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = false
+                notoAnimated = details.notoAnimated
             ),
             original = this,
             tone1 = tone1,

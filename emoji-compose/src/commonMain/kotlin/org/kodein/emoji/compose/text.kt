@@ -72,6 +72,21 @@ private fun WithNotoEmoji(
     content(annotatedString, inlineContent)
 }
 
+private suspend fun createNotoSvgInlineContent(emoji: Emoji, download: suspend (EmojiUrl) -> ByteArray): InlineTextContent? {
+    try {
+        val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.SVG))
+        val svg = SVGImage.create(bytes)
+        return InlineTextContent(
+            placeholder = Placeholder(1.em, 1.em / svg.sizeRatio(), PlaceholderVerticalAlign.Center),
+            children = {
+                SVGImage(svg, "${emoji.details.description} emoji", Modifier.fillMaxSize())
+            }
+        )
+    } catch (t: Throwable) {
+        println("${t::class.simpleName}: ${t.message}")
+        return null
+    }
+}
 
 @Composable
 public fun WithNotoImageEmoji(
@@ -82,17 +97,25 @@ public fun WithNotoImageEmoji(
     WithNotoEmoji(
         text = text,
         content = content,
-        createInlineTextContent = { found ->
-            val bytes = download(EmojiUrl.from(found.emoji, EmojiUrl.Type.SVG)) ?: return@WithNotoEmoji null
-            val svg = SVGImage.create(bytes)
-            InlineTextContent(
-                placeholder = Placeholder(1.em, 1.em / svg.sizeRatio(), PlaceholderVerticalAlign.Center),
-                children = {
-                    SVGImage(svg, "${found.emoji.details.description} emoji", Modifier.fillMaxSize())
-                }
-            )
-        }
+        createInlineTextContent = { found -> createNotoSvgInlineContent(found.emoji, download) }
     )
+}
+
+private suspend fun createNotoLottieInlineContent(emoji: Emoji, download: suspend (EmojiUrl) -> ByteArray): InlineTextContent? {
+    if (!emoji.details.notoAnimated) return createNotoSvgInlineContent(emoji, download)
+    try {
+        val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.Lottie))
+        val animation = LottieAnimation.create(bytes)
+        return InlineTextContent(
+            placeholder = Placeholder(1.em, 1.em / animation.sizeRatio(), PlaceholderVerticalAlign.Center),
+            children = {
+                LottieAnimation(animation, "${emoji.details.description} emoji", Modifier.fillMaxSize())
+            }
+        )
+    } catch (t: Throwable) {
+        println("${t::class.simpleName}: ${t.message}")
+        return createNotoSvgInlineContent(emoji, download)
+    }
 }
 
 @Composable
@@ -104,27 +127,7 @@ public fun WithNotoAnimatedEmoji(
     WithNotoEmoji(
         text = text,
         content = content,
-        createInlineTextContent = { found ->
-            val bytes = download(EmojiUrl.from(found.emoji, if (found.emoji.details.notoAnimated) EmojiUrl.Type.Lottie else EmojiUrl.Type.SVG))
-                ?: return@WithNotoEmoji null
-            if (found.emoji.details.notoAnimated) {
-                val animation = LottieAnimation.create(bytes)
-                InlineTextContent(
-                    placeholder = Placeholder(1.em, 1.em / animation.sizeRatio(), PlaceholderVerticalAlign.Center),
-                    children = {
-                        LottieAnimation(animation, "${found.emoji.details.description} emoji", Modifier.fillMaxSize())
-                    }
-                )
-            } else {
-                val svg = SVGImage.create(bytes)
-                InlineTextContent(
-                    placeholder = Placeholder(1.em, 1.em / svg.sizeRatio(), PlaceholderVerticalAlign.Center),
-                    children = {
-                        SVGImage(svg, "${found.emoji.details.description} emoji", Modifier.fillMaxSize())
-                    }
-                )
-            }
-        }
+        createInlineTextContent = { found -> createNotoLottieInlineContent(found.emoji, download) }
     )
 }
 

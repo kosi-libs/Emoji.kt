@@ -51,9 +51,11 @@ public fun NotoImageEmoji(
     val download = LocalEmojiDownloader.current
     var svg: SVGImage? by remember { mutableStateOf(null) }
     LaunchedEffect(emoji) {
-        val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.SVG))
-        if (bytes != null) {
+        try {
+            val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.SVG))
             svg = SVGImage.create(bytes)
+        } catch (t: Throwable) {
+            println("${t::class.simpleName}: ${t.message}")
         }
     }
 
@@ -75,16 +77,25 @@ public fun NotoAnimatedEmoji(
         return
     }
     val download = LocalEmojiDownloader.current
-    var animation: LottieAnimation? by remember { mutableStateOf(null) }
+    var result: Result<LottieAnimation>? by remember { mutableStateOf(null) }
     LaunchedEffect(emoji) {
-        val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.Lottie))
-        if (bytes != null) {
-            animation = LottieAnimation.create(bytes)
+        result = runCatching {
+            val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.Lottie))
+            LottieAnimation.create(bytes)
+        }.also {
+            if (it.isFailure) {
+                val t = it.exceptionOrNull()!!
+                println("${t::class.simpleName}: ${t.message}")
+            }
         }
     }
 
-    if (animation != null) {
-        LottieAnimation(animation!!, "${emoji.details.description} emoji", modifier)
+    if (result != null) {
+        if (result!!.isSuccess) {
+            LottieAnimation(result!!.getOrThrow(), "${emoji.details.description} emoji", modifier)
+        } else {
+            NotoImageEmoji(emoji, modifier, placeholder)
+        }
     } else {
         placeholder()
     }

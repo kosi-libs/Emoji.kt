@@ -30,20 +30,15 @@ public value class EmojiUrl private constructor(public val url: String) {
     public val code: String get() = url.split('/').let { it[it.lastIndex - 1] }
 }
 
-public suspend fun simpleDownloadBytes(url: EmojiUrl): ByteArray? =
-    try {
+public suspend fun simpleDownloadBytes(url: EmojiUrl): ByteArray =
         platformDownloadBytes(url.url)
-    } catch (t: Throwable) {
-        t.printStackTrace()
-        null
-    }
 
-public val LocalEmojiDownloader: ProvidableCompositionLocal<suspend (EmojiUrl) -> ByteArray?> =
+public val LocalEmojiDownloader: ProvidableCompositionLocal<suspend (EmojiUrl) -> ByteArray> =
     compositionLocalOf { ::simpleDownloadBytes }
 
 @Composable
 public fun ProvideEmojiDownloader(
-    download: suspend (EmojiUrl) -> ByteArray?,
+    download: suspend (EmojiUrl) -> ByteArray,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
