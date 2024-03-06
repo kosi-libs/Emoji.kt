@@ -219,7 +219,7 @@ WithNotoImageEmoji(
 ----
 
 
-=== Displaying Emoji with Noto vector images
+=== Displaying Emoji with Noto vector animations
 
 Instead of using Noto images, you can use animations, if the emoji supports it.
 
