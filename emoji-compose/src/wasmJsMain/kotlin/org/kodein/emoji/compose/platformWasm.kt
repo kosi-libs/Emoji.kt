@@ -25,7 +25,7 @@ internal actual suspend fun platformDownloadBytes(url: String): ByteArray {
 
 @Composable
 public actual fun WithPlatformEmoji(
-    text: String,
+    text: CharSequence,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
     WithNotoImageEmoji(text, content)
