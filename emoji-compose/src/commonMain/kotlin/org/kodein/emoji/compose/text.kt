@@ -126,7 +126,7 @@ private suspend fun createNotoLottieInlineContent(emoji: Emoji, download: suspen
 
 @Composable
 public fun WithNotoAnimatedEmoji(
-    text: String,
+    text: CharSequence,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
     val download = LocalEmojiDownloader.current
