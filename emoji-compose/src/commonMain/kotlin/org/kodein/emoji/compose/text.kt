@@ -29,7 +29,7 @@ public fun String.withEmoji(): String {
 
 @Composable
 private fun WithNotoEmoji(
-    text: String,
+    text: CharSequence,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit,
     createInlineTextContent: suspend (FoundEmoji) -> InlineTextContent?
 ) {
@@ -55,7 +55,10 @@ private fun WithNotoEmoji(
     val annotatedString = buildAnnotatedString {
         var start = 0
         all.forEach { (found, inlineTextContent) ->
-            append(text.substring(start, found.start))
+            if (text is AnnotatedString)
+                append(text.subSequence(start, found.start))
+            else
+                append(text.substring(start, found.start))
             val itc = inlineTextContent.value
             if (itc != null) {
                 val inlineContentID = "emoji:${found.emoji}"
@@ -66,7 +69,10 @@ private fun WithNotoEmoji(
             }
             start = found.end
         }
-        append(text.substring(start, text.length))
+        if (text is AnnotatedString)
+            append(text.subSequence(start, text.length))
+        else
+            append(text.substring(start, text.length))
     }
 
     content(annotatedString, inlineContent)
@@ -90,7 +96,7 @@ private suspend fun createNotoSvgInlineContent(emoji: Emoji, download: suspend (
 
 @Composable
 public fun WithNotoImageEmoji(
-    text: String,
+    text: CharSequence,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
     val download = LocalEmojiDownloader.current
@@ -120,7 +126,7 @@ private suspend fun createNotoLottieInlineContent(emoji: Emoji, download: suspen
 
 @Composable
 public fun WithNotoAnimatedEmoji(
-    text: String,
+    text: CharSequence,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
     val download = LocalEmojiDownloader.current
@@ -133,6 +139,6 @@ public fun WithNotoAnimatedEmoji(
 
 @Composable
 public expect fun WithPlatformEmoji(
-    text: String,
+    text: CharSequence,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 )

@@ -2,6 +2,7 @@ package org.kodein.emoji.compose
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -34,10 +35,11 @@ internal actual suspend fun platformDownloadBytes(url: String): ByteArray {
 
 @Composable
 public actual fun WithPlatformEmoji(
-    text: String,
+    text: CharSequence,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
-    content(AnnotatedString(text), emptyMap())
+    val annotatedString = remember(text) { AnnotatedString.Builder().append(text).toAnnotatedString() }
+    content(annotatedString, emptyMap())
 }
 
 @Composable

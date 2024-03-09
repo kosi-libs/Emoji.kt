@@ -71,7 +71,7 @@ public data class FoundEmoji(
     public val length: Int get() = end - start
 }
 
-private tailrec fun follow(string: String, index: Int, node: EmojiFinder.Node, start: Int): FoundEmoji? {
+private tailrec fun follow(string: CharSequence, index: Int, node: EmojiFinder.Node, start: Int): FoundEmoji? {
     if (index >= string.length) return node.emoji?.let { FoundEmoji(start, index, it) }
     val branches = node.branches ?: return node.emoji?.let { FoundEmoji(start, index, it) }
     val code = codePointAt(string, index)
@@ -87,7 +87,7 @@ private tailrec fun follow(string: String, index: Int, node: EmojiFinder.Node, s
 /**
  * Finds all emojis inside a String and returns their position and details.
  */
-public fun EmojiFinder.findEmoji(str: String): Sequence<FoundEmoji> =
+public fun EmojiFinder.findEmoji(str: CharSequence): Sequence<FoundEmoji> =
     sequence {
         var index = 0
         while (index < str.length) {

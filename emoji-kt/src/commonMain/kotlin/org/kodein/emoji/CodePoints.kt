@@ -8,7 +8,7 @@ internal fun codePointCharLength(code: Int) =
     if (isCodePointInOneChar(code)) 1 else 2
 
 
-internal fun codePointAt(string: String, index: Int): Int {
+internal fun codePointAt(string: CharSequence, index: Int): Int {
     if (isCodePointInOneChar(string[index].code)) {
         return string[index].code
     }
