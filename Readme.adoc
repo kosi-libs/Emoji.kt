@@ -1,7 +1,7 @@
 = Emoji.kt: Kotlin/Multiplatform Emoji
 :icons: font
 :toc: preamble
-:version: 1.2.0
+:version: 1.3.0
 
 *Emoji.kt Core* provides Kotlin/Multiplatform support for:
 
@@ -21,11 +21,11 @@
 *Emoji.Compose* provides Compose/Multiplatform support for:
 
 - *Displaying Emoji with Noto vector images.* +
-  _With: `WithNotoImageEmoji(text) { as, ic -> Text(text = as, inlineContent = ic) }`._
+  _With: `TextWithNotoImageEmoji(text)`._
 - *Displaying Emoji with Noto vector animations.* +
-  _With: `WithNotoAnimatedEmoji(text) { as, ic -> Text(text = as, inlineContent = ic) }`._
+  _With: `TextWithNotoAnimatedEmoji(text)`._
 - *Using system font if supported and reverting to Noto images if it is not (on Wasm).* +
-  _With: `WithPlatformEmoji(text) { as, ic -> Text(text = as, inlineContent = ic) }`._
+  _With: `TextWithPlatformEmoji(text)`._
 - *Handling how images & animations are downloaded.* +
   _With: `ProvideEmojiDownloader(myDownloadFunction) { content() }`._
 
@@ -178,8 +178,20 @@ You can get:
 .build.gradle.kts
 [source,kotlin,subs="verbatim,attributes"]
 ----
-implementation("org.kodein.emoji:emoji-compose:{version}")
+implementation("org.kodein.emoji:emoji-compose-m2:{version}") // With compose.material
+// OR
+implementation("org.kodein.emoji:emoji-compose-m3:{version}") // With compose.material3
 ----
+
+[NOTE]
+====
+Emoji.Compose is *not needed* if you simply wish to display platform Emojis in a Compose application. +
+It is needed if any of the following is true:
+
+- *You are targeting WASM*, as WASM does not support displaying platform emoji.
+- *You want to use Noto images or animations*.
+====
+
 
 === Displaying Emoji with Noto vector images
 
@@ -194,28 +206,18 @@ You can display a String by replacing all of its emojis by images downloaded fro
 
 [source,kotlin]
 ----
-WithNotoImageEmoji(
-    "Hello ${Emoji.Wink}, have a great day ${Emoji.WavingHand.mediumDark}, ${Emoji.RedHeart} you!"
-) { text, inlineContent ->
-    Text(text = text, inlineContent = inlineContent)
-}
+TextWithNotoImageEmoji(
+    text = "Hello ${Emoji.Wink}, have a great day ${Emoji.WavingHand.mediumDark}, ${Emoji.RedHeart} you!"
+)
 ----
-
-[NOTE]
-====
-`WithNotoAnimatedEmoji` does not display the text but constructs an `AnnotatedString` and a `Map<String, InlineTextContent>` to be than displayed.
-This is because `Text` from `material` and `material3` are different. You can use whichever you are using in your application.
-====
 
 Note that if you want to use short-codes and emoticons, you need to parse the string with `String.withEmoji` first:
 
 [source,kotlin]
 ----
-WithNotoImageEmoji(
-    "Hello :wink:, have a great day :waving-hand~medium-dark:, <3 you!".withEmoji()
-) { text, inlineContent ->
-    Text(text = text, inlineContent = inlineContent)
-}
+TextWithNotoImageEmoji(
+    text = "Hello :wink:, have a great day :waving-hand~medium-dark:, <3 you!".withEmoji()
+)
 ----
 
 
@@ -230,11 +232,9 @@ NotoAnimatedEmoji(Emoji.Wink, Modifier.fillMaxSize())
 
 [source,kotlin]
 ----
-WithNotoAnimatedEmoji(
+TextWithNotoAnimatedEmoji(
     "Hello ${Emoji.Wink}, have a great day ${Emoji.WavingHand.mediumDark}, ${Emoji.RedHeart} you!"
-) { text, inlineContent ->
-    Text(text = text, inlineContent = inlineContent)
-}
+)
 ----
 
 NOTE: If the emoji does not support animation, than it will be displayed as a still image.
@@ -274,6 +274,22 @@ ProvideEmojiDownloader(
     App()
 }
 ----
+
+
+=== Creating AnnotatedString
+
+If you want to manipulate the annotatedString produced by the `TextWith*Emoji` functions, you can instead use the `With*Emoji` functions:
+
+[source,kotlin]
+----
+WithNotoImageEmoji(
+    "Hello ${Emoji.Wink}, have a great day ${Emoji.WavingHand.mediumDark}, ${Emoji.RedHeart} you!"
+) { text, inlineContent -> //<1><2>
+    // ...
+}
+----
+<1> text: `AnnotatedString`
+<2> inlineContent: `Map<String, InlineTextContent>`
 
 
 === Accessing & customizing the Emoji Service
