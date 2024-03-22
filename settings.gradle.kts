@@ -16,5 +16,7 @@ rootProject.name = "Kosi-Emoji-KT"
 include(
     ":emoji-kt",
     ":emoji-compose",
+    ":emoji-compose-m2",
+    ":emoji-compose-m3",
     ":compose-demo"
 )
