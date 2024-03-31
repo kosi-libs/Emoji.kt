@@ -193,6 +193,21 @@ It is needed if any of the following is true:
 ====
 
 
+=== Initializing the Emoji Service
+
+The first time you use emoji composable functions, the emoji service will need to initialise, which may take a few milliseconds.
+You can initialise the emoji service ahead of time si that even the first emoji composable function invocation will be instantaneous:
+
+[source,kotlin]
+----
+@Composable
+fun App() {
+    remember { EmojiService.initialize() } //<1>
+    AppContent()
+}
+----
+<1> Service initialization happens in the background and will *not* block the UI thread.
+
 === Displaying Emoji with Noto vector images
 
 You can display an Emoji Image with `NotoImageEmoji`:
@@ -292,7 +307,7 @@ WithNotoImageEmoji(
 <2> inlineContent: `Map<String, InlineTextContent>`
 
 
-=== Accessing & customizing the Emoji Service
+=== Customizing the Emoji Service
 
 The `EmojiService` is the global reference to the `EmojiFinder` and `EmojiTemplateCatalog` used by this library. +
 You can access it with:
