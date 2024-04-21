@@ -16,7 +16,8 @@ import org.jetbrains.skia.Rect
 import org.jetbrains.skia.skottie.Animation
 import org.jetbrains.skia.sksg.InvalidationController
 import org.jetbrains.skia.svg.SVGDOM
-import org.jetbrains.skia.svg.SVGLengthContext
+import org.jetbrains.skia.svg.SVGLengthUnit
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -41,9 +42,24 @@ internal actual fun SVGImage(image: SVGImage, contentDescription: String, modifi
                 this.role = Role.Image
             }
     ) {
-        image.dom.setContainerSize(size.width, size.height)
+        val svgWidth = image.dom.root?.width
+        val svgHeight = image.dom.root?.height
+        // If the SVG has width+height specs instead of viewBox, Skia will not honor the container size
+        val scaleManually =
+            svgWidth?.unit == SVGLengthUnit.NUMBER && svgHeight?.unit == SVGLengthUnit.NUMBER
+        if (!scaleManually) {
+            image.dom.setContainerSize(size.width, size.height)
+        }
         drawIntoCanvas { canvas ->
-            image.dom.render(canvas.nativeCanvas)
+            if (svgWidth != null && svgHeight != null && scaleManually) {
+                val scaleFactor = min(size.width / svgWidth.value, size.height / svgHeight.value)
+                canvas.save()
+                canvas.scale(scaleFactor, scaleFactor)
+                image.dom.render(canvas.nativeCanvas)
+                canvas.restore()
+            } else {
+                image.dom.render(canvas.nativeCanvas)
+            }
         }
     }
 }
