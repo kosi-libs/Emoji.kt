@@ -1,9 +1,13 @@
+import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
+import com.android.build.gradle.internal.lint.LintModelWriterTask
+import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     kotlin("multiplatform")
     id("com.android.application")
     alias(libs.plugins.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -42,6 +46,17 @@ kotlin {
             implementation(libs.android.activityCompose)
         }
     }
+}
+
+// https://github.com/JetBrains/compose-multiplatform/issues/4739
+tasks.withType<LintModelWriterTask> {
+    dependsOn("generateResourceAccessorsForAndroidUnitTest")
+}
+tasks.withType<LintModelMetadataTask> {
+    dependsOn("generateResourceAccessorsForAndroidUnitTest")
+}
+tasks.withType<AndroidLintAnalysisTask> {
+    dependsOn("generateResourceAccessorsForAndroidUnitTest")
 }
 
 android {

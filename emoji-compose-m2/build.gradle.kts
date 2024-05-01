@@ -1,6 +1,10 @@
+import com.android.build.gradle.internal.lint.LintModelWriterTask
+import com.android.build.gradle.internal.tasks.LintModelMetadataTask
+
 plugins {
     kodein.library.mppWithAndroid
     alias(libs.plugins.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin.kodein {
@@ -14,6 +18,14 @@ kotlin.kodein {
         api(projects.emojiKt)
         api(projects.emojiCompose)
     }
+}
+
+// https://github.com/JetBrains/compose-multiplatform/issues/4739
+tasks.withType<LintModelWriterTask> {
+    dependsOn("generateResourceAccessorsForAndroidUnitTest")
+}
+tasks.withType<LintModelMetadataTask> {
+    dependsOn("generateResourceAccessorsForAndroidUnitTest")
 }
 
 android {
