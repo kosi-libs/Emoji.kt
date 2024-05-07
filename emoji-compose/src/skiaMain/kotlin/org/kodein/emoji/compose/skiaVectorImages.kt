@@ -61,18 +61,27 @@ internal actual class LottieAnimation(val animation: Animation) {
 }
 
 @Composable
-internal actual fun LottieAnimation(animation: LottieAnimation, contentDescription: String, modifier: Modifier) {
-    val infiniteTransition = rememberInfiniteTransition()
-    val time by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = animation.animation.duration,
-        animationSpec = infiniteRepeatable(
-            animation = tween((animation.animation.duration * 1_000).roundToInt(), easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        )
-    )
+internal actual fun LottieAnimation(
+    animation: LottieAnimation,
+    iterations: Int,
+    stopAt: Float,
+    speed: Float,
+    contentDescription: String,
+    modifier: Modifier
+) {
+    val time = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        repeat(iterations) {
+            time.snapTo(0f)
+            time.animateTo(
+                targetValue = animation.animation.duration * stopAt,
+                animationSpec = tween((animation.animation.duration * stopAt * 1_000 * speed).roundToInt(), easing = LinearEasing)
+            )
+        }
+    }
+
     val invalidationController = remember { InvalidationController() }
-    animation.animation.seekFrameTime(time, invalidationController)
+    animation.animation.seekFrameTime(time.value, invalidationController)
     Canvas(
         modifier = modifier
             .semantics {

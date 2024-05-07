@@ -14,9 +14,9 @@
 - *Parsing a `String` with short-codes and emoticons.* +
   _Such as: `catalog.replace("Hello :wink:, have a great day :waving-hand~medium-dark:, <3 you!")`._
 - *Getting emoji information.* +
-  _Such as: `Emoji.Wink.details.description`.
-- *Exploring emoji by groups subgroups.* +
-  _With: `Emoji.allEmojiGroups()` and `Emoji.subgroupsOf(group)`.
+  _Such as: `Emoji.Wink.details.description`._
+- *Exploring emoji by groups & subgroups.* +
+  _With: `Emoji.allEmojiGroups()` and `Emoji.subgroupsOf(group)`._
 
 *Emoji.Compose* provides Compose/Multiplatform support for:
 
@@ -196,7 +196,7 @@ It is needed if any of the following is true:
 === Initializing the Emoji Service
 
 The first time you use emoji composable functions, the emoji service will need to initialise, which may take a few milliseconds.
-You can initialise the emoji service ahead of time si that even the first emoji composable function invocation will be instantaneous:
+You can initialise the emoji service ahead of time so that even the first emoji composable function invocation will be instantaneous:
 
 [source,kotlin]
 ----
@@ -273,7 +273,7 @@ WithPlatformEmoji(
 
 === Handling downloads
 
-Emoji.Compose does not depends on a particular HTTP library.
+Emoji.Compose does not depend on a particular HTTP library.
 It therefore offers the simplest of downloader: no retry support, no cache or offline support, etc.
 
 If you are using Ktor, Coil, or any other multiplatform HTTP library, you can easily use it in Emoji.Compose:

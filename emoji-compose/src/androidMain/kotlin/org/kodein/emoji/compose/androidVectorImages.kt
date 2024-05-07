@@ -12,6 +12,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.LottieCompositionFactory
+import com.airbnb.lottie.compose.LottieClipSpec
 import com.airbnb.lottie.compose.LottieConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -57,10 +58,19 @@ internal actual class LottieAnimation(val composition: LottieComposition) {
 }
 
 @Composable
-internal actual fun LottieAnimation(animation: LottieAnimation, contentDescription: String, modifier: Modifier) {
+internal actual fun LottieAnimation(
+    animation: LottieAnimation,
+    iterations: Int,
+    stopAt: Float,
+    speed: Float,
+    contentDescription: String,
+    modifier: Modifier
+) {
     ALottieAnimation(
         composition = animation.composition,
-        iterations = LottieConstants.IterateForever,
+        iterations = iterations,
+        clipSpec = LottieClipSpec.Progress(max = stopAt),
+        speed = speed,
         modifier = modifier
             .semantics {
                 this.contentDescription = contentDescription

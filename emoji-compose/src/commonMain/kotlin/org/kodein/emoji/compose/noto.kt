@@ -70,6 +70,9 @@ public fun NotoImageEmoji(
 public fun NotoAnimatedEmoji(
     emoji: Emoji,
     modifier: Modifier = Modifier,
+    iterations: Int = Int.MAX_VALUE,
+    stopAt: Float = 1f,
+    speed: Float = 1f,
     placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji, modifier) }
 ) {
     if (!emoji.details.notoAnimated) {
@@ -92,7 +95,7 @@ public fun NotoAnimatedEmoji(
 
     if (result != null) {
         if (result!!.isSuccess) {
-            LottieAnimation(result!!.getOrThrow(), "${emoji.details.description} emoji", modifier)
+            LottieAnimation(result!!.getOrThrow(), iterations, stopAt, speed, "${emoji.details.description} emoji", modifier)
         } else {
             NotoImageEmoji(emoji, modifier, placeholder)
         }

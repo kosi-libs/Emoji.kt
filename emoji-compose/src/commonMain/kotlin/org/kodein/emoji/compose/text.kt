@@ -107,7 +107,12 @@ public fun WithNotoImageEmoji(
     )
 }
 
-private suspend fun createNotoLottieInlineContent(emoji: Emoji, download: suspend (EmojiUrl) -> ByteArray): InlineTextContent? {
+private suspend fun createNotoLottieInlineContent(
+    emoji: Emoji,
+    iterations: Int,
+    speed: Float,
+    download: suspend (EmojiUrl) -> ByteArray
+): InlineTextContent? {
     if (!emoji.details.notoAnimated) return createNotoSvgInlineContent(emoji, download)
     try {
         val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.Lottie))
@@ -115,7 +120,7 @@ private suspend fun createNotoLottieInlineContent(emoji: Emoji, download: suspen
         return InlineTextContent(
             placeholder = Placeholder(1.em, 1.em / animation.sizeRatio(), PlaceholderVerticalAlign.Center),
             children = {
-                LottieAnimation(animation, "${emoji.details.description} emoji", Modifier.fillMaxSize())
+                LottieAnimation(animation, iterations, 1f, speed, "${emoji.details.description} emoji", Modifier.fillMaxSize())
             }
         )
     } catch (t: Throwable) {
@@ -127,13 +132,15 @@ private suspend fun createNotoLottieInlineContent(emoji: Emoji, download: suspen
 @Composable
 public fun WithNotoAnimatedEmoji(
     text: CharSequence,
+    iterations: Int = Int.MAX_VALUE,
+    speed: Float = 1f,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
     val download = LocalEmojiDownloader.current
     WithNotoEmoji(
         text = text,
         content = content,
-        createInlineTextContent = { found -> createNotoLottieInlineContent(found.emoji, download) }
+        createInlineTextContent = { found -> createNotoLottieInlineContent(found.emoji, iterations, speed, download) }
     )
 }
 

@@ -22,4 +22,11 @@ internal expect class LottieAnimation {
 }
 
 @Composable
-internal expect fun LottieAnimation(animation: LottieAnimation, contentDescription: String, modifier: Modifier = Modifier)
+internal expect fun LottieAnimation(
+    animation: LottieAnimation,
+    iterations: Int,
+    stopAt: Float,
+    speed: Float,
+    contentDescription: String,
+    modifier: Modifier = Modifier
+)
