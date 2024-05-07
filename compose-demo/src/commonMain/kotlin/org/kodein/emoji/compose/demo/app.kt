@@ -34,22 +34,22 @@ fun App() {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            ProvideTextStyle(TextStyle(fontSize = 32.sp)) {
-                WithPlatformEmoji(
-                    "Platform:\nWhen I see :people-holding-hands~medium-light,medium-dark:, my <3 goes :collision: :D!".withEmoji()
-                ) { text, inlineContent ->
-                    Text(text = text, inlineContent = inlineContent)
-                }
-
-                WithNotoAnimatedEmoji(
-                    "Animated:\nWhen I see ${Emoji.PeopleHoldingHands.mediumLight_mediumDark}, my ${Emoji.RedHeart} goes ${Emoji.Collision} ${Emoji.Smile}!"
-                ) { text, inlineContent ->
-                    Text(text = text, inlineContent = inlineContent)
-                }
-            }
+//            ProvideTextStyle(TextStyle(fontSize = 32.sp)) {
+//                WithPlatformEmoji(
+//                    "Platform:\nWhen I see :people-holding-hands~medium-light,medium-dark:, my <3 goes :collision: :D!".withEmoji()
+//                ) { text, inlineContent ->
+//                    Text(text = text, inlineContent = inlineContent)
+//                }
+//
+//                WithNotoAnimatedEmoji(
+//                    "Animated:\nWhen I see ${Emoji.PeopleHoldingHands.mediumLight_mediumDark}, my ${Emoji.RedHeart} goes ${Emoji.Collision} ${Emoji.Smile}!"
+//                ) { text, inlineContent ->
+//                    Text(text = text, inlineContent = inlineContent)
+//                }
+//            }
             NotoAnimatedEmoji(
                 emoji = Emoji.ImpSmile,
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.size(128.dp),
                 iterations = 2,
                 stopAt = 0.76f
             )

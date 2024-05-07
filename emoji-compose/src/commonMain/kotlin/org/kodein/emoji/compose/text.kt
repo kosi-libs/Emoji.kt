@@ -21,6 +21,9 @@ import org.kodein.emoji.findEmoji
 
 internal expect fun AnnotatedString.Builder.appendNotoPlaceholder(emoji: Emoji, inlineContent: MutableMap<String, InlineTextContent>)
 
+/**
+ * Replaces all shortcodes (i.e. :emoji: or :emoji~skintone:) with their actual corresponding emojis.
+ */
 @Composable
 public fun String.withEmoji(): String {
     val service = EmojiService.get() ?: return ""
@@ -94,6 +97,14 @@ private suspend fun createNotoSvgInlineContent(emoji: Emoji, download: suspend (
     }
 }
 
+/**
+ * Creates an annotated String and a `InlineTextContent` map from a text containing Emoji characters.
+ * Replaces all emojis with [NotoImageEmoji].
+ *
+ * @param text The text to with Emoji UTF characters.
+ * @param content A lambda that receives the `AnnotatedString` and its corresponding `InlineTextContent` map
+ *                These should be used to display: `{ astr, map -> Text(astr, inlineContent = map) }`.
+ */
 @Composable
 public fun WithNotoImageEmoji(
     text: CharSequence,
@@ -129,6 +140,16 @@ private suspend fun createNotoLottieInlineContent(
     }
 }
 
+/**
+ * Creates an annotated String and a `InlineTextContent` map from a text containing Emoji characters.
+ * Replaces all emojis with [NotoAnimatedEmoji].
+ *
+ * @param text The text to with Emoji UTF characters.
+ * @param iterations The number of times that the animations will be played (default is infinite).
+ * @param speed Speed at which the animations will be rendered.
+ * @param content A lambda that receives the `AnnotatedString` and its corresponding `InlineTextContent` map
+ *                These should be used to display: `{ astr, map -> Text(astr, inlineContent = map) }`.
+ */
 @Composable
 public fun WithNotoAnimatedEmoji(
     text: CharSequence,
@@ -144,6 +165,16 @@ public fun WithNotoAnimatedEmoji(
     )
 }
 
+/**
+ * Creates an annotated String and a `InlineTextContent` map from a text containing Emoji characters.
+ *
+ * - On Wasm: Replaces all emojis with [NotoImageEmoji].
+ * - On all other platforms: does not modify the text at all (map will be empty).
+ *
+ * @param text The text to with Emoji UTF characters.
+ * @param content A lambda that receives the `AnnotatedString` and its corresponding `InlineTextContent` map
+ *                These should be used to display: `{ astr, map -> Text(astr, inlineContent = map) }`.
+ */
 @Composable
 public expect fun WithPlatformEmoji(
     text: CharSequence,

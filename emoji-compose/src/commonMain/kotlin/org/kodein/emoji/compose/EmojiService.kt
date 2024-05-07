@@ -18,6 +18,9 @@ internal fun <T> Deferred<T>.consumeAsState(initialValue: T) =
         producer = { value = await() }
     )
 
+/**
+ * Centralized Emoji [catalog] and [finder] services.
+ */
 public class EmojiService private constructor(
     public val catalog: EmojiTemplateCatalog,
     public val finder: EmojiFinder,
@@ -25,12 +28,19 @@ public class EmojiService private constructor(
     public companion object {
         private lateinit var deferred: Deferred<EmojiService>
 
+        /**
+         * Before the catalog is initialized (or accessed, as the first access initializes it), this can be assigned a lambda that will configure the catalog.
+         */
         public var catalogBuilder: EmojiTemplateCatalog.Builder.() -> Unit = {}
             set(value) {
                 if (::deferred.isInitialized) error("Cannot set catalogBuilder after Service has been initialized or accessed.")
                 field = value
             }
 
+        /**
+         * Initializes the Emoji services in the background.
+         * This function does not block.
+         */
         public fun initialize() {
             if (!::deferred.isInitialized) {
                 @OptIn(DelicateCoroutinesApi::class)
@@ -42,6 +52,10 @@ public class EmojiService private constructor(
             }
         }
 
+        /**
+         * Get the emoji service as a Composable state.
+         * @return null if the emoji service is currently initializing.
+         */
         @Composable
         public fun get(): EmojiService? {
             initialize()
@@ -49,6 +63,9 @@ public class EmojiService private constructor(
             return service
         }
 
+        /**
+         * Awaits for the Emoji service to be initialized.
+         */
         public suspend fun await(): EmojiService {
             initialize()
             return deferred.await()

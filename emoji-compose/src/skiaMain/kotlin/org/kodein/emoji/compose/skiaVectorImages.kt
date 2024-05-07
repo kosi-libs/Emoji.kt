@@ -73,9 +73,13 @@ internal actual fun LottieAnimation(
     LaunchedEffect(Unit) {
         repeat(iterations) {
             time.snapTo(0f)
+            val isLastIteration = it == (iterations - 1)
+            val target =
+                if (isLastIteration) animation.animation.duration * stopAt
+                else animation.animation.duration
             time.animateTo(
-                targetValue = animation.animation.duration * stopAt,
-                animationSpec = tween((animation.animation.duration * stopAt * 1_000 * speed).roundToInt(), easing = LinearEasing)
+                targetValue = target,
+                animationSpec = tween((target * 1_000 * speed).roundToInt(), easing = LinearEasing)
             )
         }
     }

@@ -16,11 +16,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
-import org.kodein.emoji.compose.WithNotoAnimatedEmoji
-import org.kodein.emoji.compose.WithNotoImageEmoji
-import org.kodein.emoji.compose.WithPlatformEmoji
+import org.kodein.emoji.compose.*
 
 
+/**
+ * Displays a `String` containing Emoji characters.
+ *
+ * - On Wasm: Replaces all emojis with [NotoImageEmoji].
+ * - On all other platforms: does not modify the text at all.
+ *
+ * @see androidx.compose.material3.Text
+ */
 @Composable
 public fun TextWithPlatformEmoji(
     text: String,
@@ -40,7 +46,6 @@ public fun TextWithPlatformEmoji(
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
-
 ) {
     WithPlatformEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
         Text(
@@ -66,6 +71,14 @@ public fun TextWithPlatformEmoji(
     }
 }
 
+/**
+ * Displays an `AnnotatedString` containing Emoji characters.
+ *
+ * - On Wasm: Replaces all emojis with [NotoImageEmoji].
+ * - On all other platforms: does not modify the text at all.
+ *
+ * @see androidx.compose.material3.Text
+ */
 @Composable
 public fun TextWithPlatformEmoji(
     text: AnnotatedString,
@@ -86,7 +99,6 @@ public fun TextWithPlatformEmoji(
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
-
 ) {
     WithPlatformEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
         Text(
@@ -112,6 +124,12 @@ public fun TextWithPlatformEmoji(
     }
 }
 
+/**
+ * Displays a `String` containing Emoji characters.
+ * Replaces all emojis with [NotoImageEmoji].
+ *
+ * @see androidx.compose.material3.Text
+ */
 @Composable
 public fun TextWithNotoImageEmoji(
     text: String,
@@ -131,7 +149,6 @@ public fun TextWithNotoImageEmoji(
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
-
 ) {
     WithNotoImageEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
         Text(
@@ -157,6 +174,12 @@ public fun TextWithNotoImageEmoji(
     }
 }
 
+/**
+ * Displays an `AnnotatedString` containing Emoji characters.
+ * Replaces all emojis with [NotoImageEmoji].
+ *
+ * @see androidx.compose.material3.Text
+ */
 @Composable
 public fun TextWithNotoImageEmoji(
     text: AnnotatedString,
@@ -177,7 +200,6 @@ public fun TextWithNotoImageEmoji(
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
-
 ) {
     WithNotoImageEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
         Text(
@@ -203,6 +225,14 @@ public fun TextWithNotoImageEmoji(
     }
 }
 
+/**
+ * Displays a `String` containing Emoji characters.
+ * Replaces all emojis with [NotoAnimatedEmoji].
+ *
+ * @param iterations The number of times that the animations will be played (default is infinite).
+ * @param speed Speed at which the animations will be rendered.
+ * @see androidx.compose.material.Text
+ */
 @Composable
 public fun TextWithNotoAnimatedEmoji(
     text: String,
@@ -222,7 +252,6 @@ public fun TextWithNotoAnimatedEmoji(
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
-
 ) {
     WithNotoAnimatedEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
         Text(
@@ -248,6 +277,14 @@ public fun TextWithNotoAnimatedEmoji(
     }
 }
 
+/**
+ * Displays an `AnnotatedString` containing Emoji characters.
+ * Replaces all emojis with [NotoAnimatedEmoji].
+ *
+ * @param iterations The number of times that the animations will be played (default is infinite).
+ * @param speed Speed at which the animations will be rendered.
+ * @see androidx.compose.material.Text
+ */
 @Composable
 public fun TextWithNotoAnimatedEmoji(
     text: AnnotatedString,
@@ -268,7 +305,6 @@ public fun TextWithNotoAnimatedEmoji(
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
-
 ) {
     WithNotoAnimatedEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
         Text(
