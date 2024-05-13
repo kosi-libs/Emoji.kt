@@ -11,10 +11,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.kodein.emoji.Emoji
-import org.kodein.emoji.compose.NotoAnimatedEmoji
-import org.kodein.emoji.compose.WithNotoAnimatedEmoji
-import org.kodein.emoji.compose.WithPlatformEmoji
-import org.kodein.emoji.compose.withEmoji
+import org.kodein.emoji.compose.*
+import org.kodein.emoji.compose.m2.TextWithNotoAnimatedEmoji
+import org.kodein.emoji.compose.m2.TextWithNotoImageEmoji
+import org.kodein.emoji.compose.m2.TextWithPlatformEmoji
 import org.kodein.emoji.mediumLight_mediumDark
 import org.kodein.emoji.people_body.family.PeopleHoldingHands
 import org.kodein.emoji.smileys_emotion.emotion.Collision
@@ -32,21 +32,21 @@ fun App() {
             modifier = Modifier.fillMaxSize()
         ) {
             ProvideTextStyle(TextStyle(fontSize = 32.sp)) {
-                WithPlatformEmoji(
+                TextWithPlatformEmoji(
                     "Platform:\nWhen I see :people-holding-hands~medium-light,medium-dark:, my <3 goes :collision: :D!".withEmoji()
-                ) { text, inlineContent ->
-                    Text(text = text, inlineContent = inlineContent)
-                }
+                )
 
-                WithNotoAnimatedEmoji(
+                TextWithNotoImageEmoji(
+                    "images:\nWhen I see ${Emoji.PeopleHoldingHands.mediumLight_mediumDark}, my ${Emoji.RedHeart} goes ${Emoji.Collision} ${Emoji.Smile}!"
+                )
+
+                TextWithNotoAnimatedEmoji(
                     "Animated:\nWhen I see ${Emoji.PeopleHoldingHands.mediumLight_mediumDark}, my ${Emoji.RedHeart} goes ${Emoji.Collision} ${Emoji.Smile}!"
-                ) { text, inlineContent ->
-                    Text(text = text, inlineContent = inlineContent)
-                }
+                )
             }
             NotoAnimatedEmoji(
                 emoji = Emoji.ImpSmile,
-                modifier = Modifier.size(64.dp).padding(top = 16.dp),
+                modifier = Modifier.size(64.dp),
                 iterations = 2,
                 stopAt = 0.76f
             )

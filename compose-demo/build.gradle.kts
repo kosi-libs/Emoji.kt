@@ -33,7 +33,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
-            implementation(projects.emojiCompose)
+            implementation(projects.emojiComposeM2)
         }
         getByName("jvmMain").dependencies {
             implementation(compose.desktop.currentOs)
