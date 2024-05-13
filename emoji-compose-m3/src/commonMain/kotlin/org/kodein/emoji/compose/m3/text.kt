@@ -45,9 +45,13 @@ public fun TextWithPlatformEmoji(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean = false,
 ) {
-    WithPlatformEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
+    WithPlatformEmoji(
+        text = text,
+        fixedImageSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
             modifier = modifier,
@@ -98,9 +102,13 @@ public fun TextWithPlatformEmoji(
     minLines: Int = 1,
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean = false,
 ) {
-    WithPlatformEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
+    WithPlatformEmoji(
+        text = text,
+        fixedImageSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
             modifier = modifier,
@@ -148,9 +156,13 @@ public fun TextWithNotoImageEmoji(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean = false,
 ) {
-    WithNotoImageEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
+    WithNotoImageEmoji(
+        text = text,
+        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
             modifier = modifier,
@@ -199,9 +211,13 @@ public fun TextWithNotoImageEmoji(
     minLines: Int = 1,
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean = false,
 ) {
-    WithNotoImageEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
+    WithNotoImageEmoji(
+        text = text,
+        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
             modifier = modifier,
@@ -251,9 +267,17 @@ public fun TextWithNotoAnimatedEmoji(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    emojiAnimationIterations: Int = Int.MAX_VALUE,
+    emojiAnimationSpeed: Float = 1f,
+    fixedEmojiSize: Boolean = false,
 ) {
-    WithNotoAnimatedEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
+    WithNotoAnimatedEmoji(
+        text = text,
+        iterations = emojiAnimationIterations,
+        speed = emojiAnimationSpeed,
+        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
             modifier = modifier,
@@ -304,9 +328,17 @@ public fun TextWithNotoAnimatedEmoji(
     minLines: Int = 1,
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    emojiAnimationIterations: Int = Int.MAX_VALUE,
+    emojiAnimationSpeed: Float = 1f,
+    fixedEmojiSize: Boolean = false,
 ) {
-    WithNotoAnimatedEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
+    WithNotoAnimatedEmoji(
+        text = text,
+        iterations = emojiAnimationIterations,
+        speed = emojiAnimationSpeed,
+        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
             modifier = modifier,
