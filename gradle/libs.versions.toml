@@ -1,6 +1,6 @@
 [versions]
 compose = "1.6.10-beta03"
-compose-compiler = "2.0.0-RC2"
+compose-compiler = "2.0.0-RC3"
 android-activityCompose = "1.8.2"
 android-svg = "1.4"
 android-lottie = "6.3.0"
