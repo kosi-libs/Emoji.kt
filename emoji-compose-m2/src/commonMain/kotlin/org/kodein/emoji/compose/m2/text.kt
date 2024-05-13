@@ -318,7 +318,11 @@ public fun TextWithNotoAnimatedEmoji(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current
 ) {
-    WithNotoAnimatedEmoji(text) { emojiAnnotatedString, emojiInlineContent ->
+    WithNotoAnimatedEmoji(
+        text = text,
+        iterations = iterations,
+        speed = speed
+    ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
             modifier = modifier,

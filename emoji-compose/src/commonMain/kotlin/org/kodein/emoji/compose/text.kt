@@ -1,6 +1,7 @@
 package org.kodein.emoji.compose
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import kotlinx.coroutines.launch
 import org.kodein.emoji.Emoji
@@ -88,7 +90,7 @@ private suspend fun createNotoSvgInlineContent(emoji: Emoji, download: suspend (
         return InlineTextContent(
             placeholder = Placeholder(1.em, 1.em / svg.sizeRatio(), PlaceholderVerticalAlign.Center),
             children = {
-                SVGImage(svg, "${emoji.details.description} emoji", Modifier.fillMaxSize())
+                SVGImage(svg, "${emoji.details.description} emoji", Modifier.size(20.dp))
             }
         )
     } catch (t: Throwable) {

@@ -1,9 +1,6 @@
 package org.kodein.emoji.compose.demo
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
@@ -34,22 +31,22 @@ fun App() {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-//            ProvideTextStyle(TextStyle(fontSize = 32.sp)) {
-//                WithPlatformEmoji(
-//                    "Platform:\nWhen I see :people-holding-hands~medium-light,medium-dark:, my <3 goes :collision: :D!".withEmoji()
-//                ) { text, inlineContent ->
-//                    Text(text = text, inlineContent = inlineContent)
-//                }
-//
-//                WithNotoAnimatedEmoji(
-//                    "Animated:\nWhen I see ${Emoji.PeopleHoldingHands.mediumLight_mediumDark}, my ${Emoji.RedHeart} goes ${Emoji.Collision} ${Emoji.Smile}!"
-//                ) { text, inlineContent ->
-//                    Text(text = text, inlineContent = inlineContent)
-//                }
-//            }
+            ProvideTextStyle(TextStyle(fontSize = 32.sp)) {
+                WithPlatformEmoji(
+                    "Platform:\nWhen I see :people-holding-hands~medium-light,medium-dark:, my <3 goes :collision: :D!".withEmoji()
+                ) { text, inlineContent ->
+                    Text(text = text, inlineContent = inlineContent)
+                }
+
+                WithNotoAnimatedEmoji(
+                    "Animated:\nWhen I see ${Emoji.PeopleHoldingHands.mediumLight_mediumDark}, my ${Emoji.RedHeart} goes ${Emoji.Collision} ${Emoji.Smile}!"
+                ) { text, inlineContent ->
+                    Text(text = text, inlineContent = inlineContent)
+                }
+            }
             NotoAnimatedEmoji(
                 emoji = Emoji.ImpSmile,
-                modifier = Modifier.size(128.dp),
+                modifier = Modifier.size(64.dp).padding(top = 16.dp),
                 iterations = 2,
                 stopAt = 0.76f
             )

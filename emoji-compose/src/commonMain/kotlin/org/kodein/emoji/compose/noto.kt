@@ -46,13 +46,13 @@ internal expect fun PlatformEmojiPlaceholder(emoji: Emoji, modifier: Modifier)
  * Shows an Emoji as an image downloaded from the Noto image library.
  *
  * @param emoji The Emoji to render
- * @param modifier The modifier to be applied to the layout.
+ * @param modifier The **madatory** modifier that **must define the size of the displayed emoji**, to be applied to the layout.
  * @param placeholder Composable that will be rendered in place during the download of the image.
  */
 @Composable
 public fun NotoImageEmoji(
     emoji: Emoji,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji, modifier) }
 ) {
     val download = LocalEmojiDownloader.current
@@ -73,11 +73,25 @@ public fun NotoImageEmoji(
     }
 }
 
+@Deprecated(
+    message = "Modifier that defines size (width & height) is mandatory",
+    replaceWith = ReplaceWith("NotoImageEmoji(emoji, Modifier.size(16.dp), placeholder)"),
+    level = DeprecationLevel.ERROR
+)
+@Composable
+public fun NotoImageEmoji(
+    emoji: Emoji,
+    placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji, Modifier) }
+) {
+    NotoImageEmoji(emoji, Modifier, placeholder)
+}
+
+
 /**
  * Shows an animated Emoji if it is [Emoji.Details.notoAnimated], or defers to [NotoImageEmoji] if it is not.
  *
  * @param emoji The Emoji to render
- * @param modifier The modifier to be applied to the layout.
+ * @param modifier The **madatory** modifier that **must define the size of the displayed emoji**, to be applied to the layout.
  * @param iterations The number of times that the animation will be played (default is infinite).
  * @param stopAt Progress that the emoji will stop at during its last iteration.
  * @param speed Speed at which the animation will be rendered.
@@ -86,7 +100,7 @@ public fun NotoImageEmoji(
 @Composable
 public fun NotoAnimatedEmoji(
     emoji: Emoji,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     iterations: Int = Int.MAX_VALUE,
     stopAt: Float = 1f,
     speed: Float = 1f,
@@ -119,4 +133,20 @@ public fun NotoAnimatedEmoji(
     } else {
         placeholder()
     }
+}
+
+@Deprecated(
+    message = "Modifier that defines size (width & height) is mandatory",
+    replaceWith = ReplaceWith("NotoAnimatedEmoji(emoji, Modifier.size(16.dp), iterations, stopAt, speed, placeholder)"),
+    level = DeprecationLevel.ERROR
+)
+@Composable
+public fun NotoAnimatedEmoji(
+    emoji: Emoji,
+    iterations: Int = Int.MAX_VALUE,
+    stopAt: Float = 1f,
+    speed: Float = 1f,
+    placeholder: @Composable () -> Unit = { PlatformEmojiPlaceholder(emoji, Modifier) }
+) {
+    NotoAnimatedEmoji(emoji, Modifier, iterations, stopAt, speed, placeholder)
 }

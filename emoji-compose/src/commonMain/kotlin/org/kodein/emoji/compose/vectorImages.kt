@@ -12,7 +12,7 @@ internal expect class SVGImage {
 }
 
 @Composable
-internal expect fun SVGImage(image: SVGImage, contentDescription: String, modifier: Modifier = Modifier)
+internal expect fun SVGImage(image: SVGImage, contentDescription: String, modifier: Modifier)
 
 internal expect class LottieAnimation {
     fun sizeRatio(): Float
@@ -28,5 +28,5 @@ internal expect fun LottieAnimation(
     stopAt: Float,
     speed: Float,
     contentDescription: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 )
