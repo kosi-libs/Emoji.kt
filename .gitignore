@@ -9,6 +9,9 @@ build/
 ### Mac OS ###
 .DS_Store
 
+### Kotlin ###
+.kotlin
+
 ### Js ###
 node_modules/
 

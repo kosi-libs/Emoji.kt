@@ -1,8 +1,8 @@
 [versions]
-compose = "1.6.1"
-android-activityCompose = "1.8.2"
-android-svg = "1.4"
+android-activityCompose = "1.9.0"
 android-lottie = "6.3.0"
+android-svg = "1.4"
+compose = "1.6.10"
 
 [plugins]
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }

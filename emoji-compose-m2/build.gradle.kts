@@ -1,6 +1,7 @@
 plugins {
     kodein.library.mppWithAndroid
     alias(libs.plugins.compose)
+    alias(kodeinGlobals.plugins.kotlin.plugin.compose)
 }
 
 kotlin.kodein {

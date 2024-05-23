@@ -4,6 +4,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.application")
     alias(libs.plugins.compose)
+    alias(kodeinGlobals.plugins.kotlin.plugin.compose)
 }
 
 kotlin {
