@@ -48,12 +48,22 @@ internal fun genCollections(outputDir: File, groups: AnnotatedFormTree) {
                 }
                 writer.appendLine("}")
                 writer.appendLine()
-                writer.appendLine("internal fun MutableList<Emoji>.addAll$subgroupPCId() {")
+                writer.appendLine("internal suspend fun SequenceScope<Emoji>.yieldAll$subgroupPCId() {")
                 annotatedForms.forEach { annotatedForm ->
                     val id = annotatedForm.mainForm.entry.description.asEmojiId()
-                    writer.appendLine("    add(_$id)")
+                    writer.appendLine("    yield(_$id)")
                 }
                 writer.appendLine("}")
+                writer.appendLine()
+                writer.appendLine("internal val count$subgroupPCId = ${annotatedForms.size}")
+                writer.appendLine()
+                writer.appendLine("""
+                    /**
+                     * All Emoji of the ${annotatedForms.first().mainForm.entry.group}: ${annotatedForms.first().mainForm.entry.subgroup} subgroup.
+                    */
+                """.trimIndent())
+                writer.appendLine("public fun Emoji.Companion.sequence$subgroupPCId(): Sequence<Emoji> =")
+                writer.appendLine("    sequence { yieldAll$subgroupPCId() }")
                 writer.appendLine()
                 writer.appendLine("""
                     /**
@@ -63,8 +73,12 @@ internal fun genCollections(outputDir: File, groups: AnnotatedFormTree) {
                      * This method should be called in background and its result should be cached.
                     */
                 """.trimIndent())
+                writer.appendLine("public fun Emoji.Companion.list$subgroupPCId(): List<Emoji> =")
+                writer.appendLine("    ArrayList<Emoji>(count$subgroupPCId).also { list -> sequence$subgroupPCId().forEach { list.add(it) } }")
+                writer.appendLine()
+                writer.appendLine("@Deprecated(\"Renamed list$subgroupPCId.\", replaceWith = ReplaceWith(\"list$subgroupPCId()\"), level = DeprecationLevel.WARNING)")
                 writer.appendLine("public fun Emoji.Companion.all$subgroupPCId(): List<Emoji> =")
-                writer.appendLine("    ArrayList<Emoji>(${annotatedForms.size}).apply { addAll$subgroupPCId() }")
+                writer.appendLine("    list$subgroupPCId()")
             }
         }
         val groupPCId = groupId.pascalCase()
@@ -84,11 +98,21 @@ internal fun genCollections(outputDir: File, groups: AnnotatedFormTree) {
             }
             writer.appendLine("}")
             writer.appendLine()
-            writer.appendLine("internal fun MutableList<Emoji>.addAll$groupPCId() {")
+            writer.appendLine("internal suspend fun SequenceScope<Emoji>.yieldAll$groupPCId() {")
             subGroups.keys.forEach { subgroupId ->
-                writer.appendLine("    addAll${subgroupId.pascalCase()}()")
+                writer.appendLine("    yieldAll${subgroupId.pascalCase()}()")
             }
             writer.appendLine("}")
+            writer.appendLine()
+            writer.appendLine("internal val count$groupPCId = ${subGroups.values.sumOf { it.size }}")
+            writer.appendLine()
+            writer.appendLine("""
+                /**
+                 * All Emoji of the ${subGroups.values.first().first().mainForm.entry.group} group.
+                */
+            """.trimIndent())
+            writer.appendLine("public fun Emoji.Companion.sequence$groupPCId(): Sequence<Emoji> =")
+            writer.appendLine("    sequence { yieldAll$groupPCId() }")
             writer.appendLine()
             writer.appendLine("""
                 /**
@@ -99,12 +123,12 @@ internal fun genCollections(outputDir: File, groups: AnnotatedFormTree) {
                 */
             """.trimIndent())
             writer.appendLine("public fun Emoji.Companion.all$groupPCId(): List<Emoji> =")
-            writer.appendLine("    ArrayList<Emoji>(${subGroups.values.sumOf { it.size }}).apply { addAll$groupPCId() }")
+            writer.appendLine("    ArrayList<Emoji>(count$groupPCId).also { list -> sequence$groupPCId().forEach { list.add(it) } }")
             writer.appendLine()
             writer.appendLine("internal fun all${groupPCId}Subgroups(): Map<String, () -> List<Emoji>> =")
             writer.appendLine("    mapOf(")
             subGroups.keys.forEach { subgroupId ->
-                writer.appendLine("        \"$subgroupId\" to { Emoji.all${subgroupId.pascalCase()}() },")
+                writer.appendLine("        \"$subgroupId\" to { Emoji.list${subgroupId.pascalCase()}() },")
             }
             writer.appendLine("    )")
         }
@@ -147,10 +171,10 @@ internal fun genCollections(outputDir: File, groups: AnnotatedFormTree) {
              * This method should be called in background and its result should be cached.
             */
         """.trimIndent())
-        writer.appendLine("public fun Emoji.Companion.all(): List<Emoji> =")
-        writer.appendLine("    ArrayList<Emoji>(emojiCount).apply {")
+        writer.appendLine("public fun Emoji.Companion.sequence(): Sequence<Emoji> =")
+        writer.appendLine("    sequence {")
         groups.keys.forEach { groupId ->
-            writer.appendLine("        addAll${groupId.pascalCase()}()")
+            writer.appendLine("        yieldAll${groupId.pascalCase()}()")
         }
         writer.appendLine("    }")
         writer.appendLine()
@@ -160,5 +184,11 @@ internal fun genCollections(outputDir: File, groups: AnnotatedFormTree) {
             writer.appendLine("        \"$groupId\" to all${groupId.pascalCase()}Subgroups(),")
         }
         writer.appendLine("    )")
+        writer.appendLine()
+        writer.appendLine("public fun Emoji.Companion.list(): List<Emoji> =")
+        writer.appendLine("    ArrayList<Emoji>(emojiCount).also { list -> sequence().forEach { list.add(it) } }")
+        writer.appendLine()
+        writer.appendLine("@Deprecated(\"Renamed list.\", replaceWith = ReplaceWith(\"list()\"), level = DeprecationLevel.WARNING)")
+        writer.appendLine("public fun Emoji.Companion.all(): List<Emoji> = list()")
     }
 }

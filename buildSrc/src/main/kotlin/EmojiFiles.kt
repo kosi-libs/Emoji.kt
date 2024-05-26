@@ -17,7 +17,7 @@ private fun skinToneIntIndices2CharIndices(code: List<Int>, intIndices: List<Int
 internal typealias AnnotatedFormTree = Map<String, Map<String, List<AnnotatedForm>>>
 
 internal fun genEmojiFiles(outputDir: File, annotatedForms: List<AnnotatedForm>): AnnotatedFormTree {
-    val ids = HashMap<String, HashMap<String, ArrayList<AnnotatedForm>>>()
+    val ids = LinkedHashMap<String, LinkedHashMap<String, ArrayList<AnnotatedForm>>>()
     annotatedForms
         .forEach { annotatedForm ->
             val groupId = annotatedForm.mainForm.entry.group.snakeCase()
@@ -25,7 +25,7 @@ internal fun genEmojiFiles(outputDir: File, annotatedForms: List<AnnotatedForm>)
             val dir = outputDir.resolve(groupId).resolve(subgroupId)
             dir.mkdirs()
             val id = annotatedForm.mainForm.entry.description.asEmojiId()
-            ids.getOrPut(groupId) { HashMap() }.getOrPut(subgroupId) { ArrayList() }.add(annotatedForm)
+            ids.getOrPut(groupId) { LinkedHashMap() }.getOrPut(subgroupId) { ArrayList() }.add(annotatedForm)
             val doubleSkinToneZWJ = annotatedForm.mainForm.doubleSkinToneZWJs["minimally-qualified"] ?: annotatedForm.mainForm.doubleSkinToneZWJs["fully-qualified"]
             val unqualifiedForm = annotatedForm.altForms.firstOrNull { it.entry.type == "unqualified" }
             val (itf, impl) = when {

@@ -79,5 +79,9 @@ fun annotate(grouppedForms: GrouppedForms, notoJsonFile: File): List<AnnotatedFo
         )
     }
 
-    return annotatedForms
+    check(annotatedForms.size == grouppedForms.size)
+
+    return grouppedForms.map { forms ->
+        annotatedForms.first { it.mainForm in forms }
+    }
 }

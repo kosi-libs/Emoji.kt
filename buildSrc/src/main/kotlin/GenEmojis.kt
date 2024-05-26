@@ -25,14 +25,6 @@ abstract class GenEmojis : DefaultTask() {
         genDirectory.convention(project.layout.buildDirectory.dir("gen/emoji"))
     }
 
-    private val skinTones = listOf(
-        0x1F3FB to "Light",
-        0x1F3FC to "MediumLight",
-        0x1F3FD to "Medium",
-        0x1F3FE to "MediumDark",
-        0x1F3FF to "Dark"
-    )
-
     // Generates emojis
 
 
@@ -48,6 +40,7 @@ abstract class GenEmojis : DefaultTask() {
         outputDir.mkdirs()
 
         val tree = genEmojiFiles(outputDir, annotatedForms)
+
         genCollections(outputDir, tree)
     }
 
