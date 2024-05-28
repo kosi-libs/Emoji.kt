@@ -35,8 +35,15 @@ public sealed interface Emoji {
         val unicodeVersion: UnicodeVersion,
         val aliases: List<String>,
         val emoticons: List<String>,
-        val notoAnimated: Boolean
-    )
+        val notoImageRatio: Float,
+        val notoAnimationRatio: Float
+    ) {
+        val hasNotoImage: Boolean get() = notoImageRatio != 0f
+        val hasNotoAnimation: Boolean get() = notoAnimationRatio != 0f
+        @Deprecated("Renamed hasNotoAnimation", ReplaceWith("hasNotoAnimation"))
+        val notoAnimated: Boolean get() = hasNotoAnimation
+
+    }
     public companion object
 }
 
@@ -163,7 +170,8 @@ internal open class SkinTone1EmojiImpl(
                 unicodeVersion = details.unicodeVersion,
                 aliases = details.aliases.map { it + "~${tone.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = details.notoAnimated
+                notoImageRatio = details.notoImageRatio,
+                notoAnimationRatio = details.notoAnimationRatio
             ),
             original = this,
             tone1 = tone
@@ -185,7 +193,8 @@ internal open class UnqualifiedSkinTone1EmojiImpl(
                 unicodeVersion = details.unicodeVersion,
                 aliases = details.aliases.map { it + "~${tone.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = details.notoAnimated
+                notoImageRatio = details.notoImageRatio,
+                notoAnimationRatio = details.notoAnimationRatio
             ),
             original = this,
             tone1 = tone
@@ -210,7 +219,8 @@ internal class SkinTone2EmojiZWJImpl internal constructor(
                 unicodeVersion = zwjUnicodeVersion,
                 aliases = details.aliases.map { it + "~${tone1.alias},${tone2.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = details.notoAnimated
+                notoImageRatio = details.notoImageRatio,
+                notoAnimationRatio = details.notoAnimationRatio
             ),
             original = this,
             tone1 = tone1,
@@ -233,7 +243,8 @@ internal class SkinTone2EmojiImpl internal constructor(
                 unicodeVersion = details.unicodeVersion,
                 aliases = details.aliases.map { it + "~${tone1.alias},${tone2.alias}" },
                 emoticons = emptyList(),
-                notoAnimated = details.notoAnimated
+                notoImageRatio = details.notoImageRatio,
+                notoAnimationRatio = details.notoAnimationRatio
             ),
             original = this,
             tone1 = tone1,

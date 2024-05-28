@@ -2,17 +2,17 @@ plugins {
     kodein.library.mpp
 }
 
-val genEmojis = tasks.create<GenEmojis>("genEmojis")
-
 kotlin.kodein {
     all {
         compilations.main {
-            compileTaskProvider { dependsOn(genEmojis) }
+            compileTaskProvider { dependsOn(":genEmojis") }
         }
     }
 
     common.main {
-        kotlin.srcDirs(genEmojis.genDirectory)
+        kotlin.srcDirs(provider {
+            rootProject.tasks.getByName<GenEmojis>("genEmojis").genEmojiDirectory
+        })
     }
 }
 

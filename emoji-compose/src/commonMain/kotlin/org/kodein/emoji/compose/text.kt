@@ -1,7 +1,6 @@
 package org.kodein.emoji.compose
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.runtime.*
@@ -10,11 +9,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import kotlinx.coroutines.launch
 import org.kodein.emoji.Emoji
-import org.kodein.emoji.FoundEmoji
 import org.kodein.emoji.findEmoji
 
 
@@ -30,61 +26,12 @@ public fun String.withEmoji(): String {
 }
 
 @Composable
-private fun WithDynamicSizedNotoEmoji(
+private fun WithNotoEmoji(
     text: CharSequence,
+    ratio: Emoji.() -> Float,
+    placeholder: @Composable (Emoji) -> Unit,
+    createDisplay: suspend (Emoji) -> (@Composable () -> Unit)?,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit,
-    createInlineTextContent: suspend (FoundEmoji) -> InlineTextContent?
-) {
-    val service = EmojiService.get() ?: return
-
-    val all = remember(text) {
-        service.finder.findEmoji(text)
-            .map { found ->
-                found to mutableStateOf<InlineTextContent?>(null)
-            }
-            .toList()
-    }
-
-    LaunchedEffect(all) {
-        all.forEach { (found, inlineTextContent) ->
-            launch {
-                inlineTextContent.value = createInlineTextContent(found)
-            }
-        }
-    }
-
-    val inlineContent = HashMap<String, InlineTextContent>()
-    val annotatedString = buildAnnotatedString {
-        var start = 0
-        all.forEach { (found, inlineTextContent) ->
-            if (text is AnnotatedString)
-                append(text.subSequence(start, found.start))
-            else
-                append(text.substring(start, found.start))
-            val itc = inlineTextContent.value
-            if (itc != null) {
-                val inlineContentID = "emoji:${found.emoji}"
-                inlineContent[inlineContentID] = itc
-                appendInlineContent(inlineContentID)
-            } else {
-                appendNotoPlaceholder(found.emoji, inlineContent)
-            }
-            start = found.end
-        }
-        if (text is AnnotatedString)
-            append(text.subSequence(start, text.length))
-        else
-            append(text.substring(start, text.length))
-    }
-
-    content(annotatedString, inlineContent)
-}
-
-@Composable
-private fun WithFixedSizedNotoEmoji(
-    text: CharSequence,
-    content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit,
-    createInlineTextContent: suspend (FoundEmoji) -> InlineTextContent?
 ) {
     val service = EmojiService.get() ?: return
 
@@ -98,16 +45,17 @@ private fun WithFixedSizedNotoEmoji(
                 append(text.subSequence(start, found.start))
             else
                 append(text.substring(start, found.start))
+            println(found.emoji)
             val inlineContentID = "emoji:${found.emoji}"
-            inlineContent[inlineContentID] = InlineTextContent(Placeholder(1.em, 1.em, PlaceholderVerticalAlign.Center)) {
-                var itc: InlineTextContent? by remember { mutableStateOf(null) }
+            inlineContent[inlineContentID] = InlineTextContent(Placeholder(found.emoji.ratio().em, 1.em, PlaceholderVerticalAlign.Center)) {
+                var display: (@Composable () -> Unit)? by remember { mutableStateOf(null) }
                 LaunchedEffect(null) {
-                    itc = createInlineTextContent(found)
+                    display = createDisplay(found.emoji)
                 }
-                if (itc == null) {
-                    content(AnnotatedString(found.emoji.details.string), emptyMap())
+                if (display == null) {
+                    placeholder(found.emoji)
                 } else {
-                    itc!!.children("")
+                    display!!.invoke()
                 }
             }
             appendInlineContent(inlineContentID)
@@ -122,27 +70,13 @@ private fun WithFixedSizedNotoEmoji(
     content(annotatedString, inlineContent)
 }
 
-@Composable
-private fun WithNotoEmoji(
-    text: CharSequence,
-    content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit,
-    createInlineTextContent: suspend (FoundEmoji) -> InlineTextContent?,
-    fixedSize: Boolean,
-) {
-    if (fixedSize) WithFixedSizedNotoEmoji(text, content, createInlineTextContent)
-    else WithDynamicSizedNotoEmoji(text, content, createInlineTextContent)
-}
-
-private suspend fun createNotoSvgInlineContent(emoji: Emoji, download: suspend (EmojiUrl) -> ByteArray): InlineTextContent? {
+private suspend fun createNotoSvgContent(emoji: Emoji, download: suspend (EmojiUrl) -> ByteArray): (@Composable () -> Unit)? {
     try {
         val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.SVG))
         val svg = SVGImage.create(bytes)
-        return InlineTextContent(
-            placeholder = Placeholder(1.em, 1.em / svg.sizeRatio(), PlaceholderVerticalAlign.Center),
-            children = {
-                SVGImage(svg, "${emoji.details.description} emoji", Modifier.fillMaxSize())
-            }
-        )
+        return {
+            SVGImage(svg, "${emoji.details.description} emoji", Modifier.fillMaxSize())
+        }
     } catch (t: Throwable) {
         println("${t::class.simpleName}: ${t.message}")
         return null
@@ -154,44 +88,53 @@ private suspend fun createNotoSvgInlineContent(emoji: Emoji, download: suspend (
  * Replaces all emojis with [NotoImageEmoji].
  *
  * @param text The text to with Emoji UTF characters.
- * @param fixedSize If true, then the emoji will not be resized once downloaded.
  * @param content A lambda that receives the `AnnotatedString` and its corresponding `InlineTextContent` map
  *                These should be used to display: `{ astr, map -> Text(astr, inlineContent = map) }`.
  */
 @Composable
 public fun WithNotoImageEmoji(
     text: CharSequence,
-    fixedSize: Boolean = false,
+    placeholder: @Composable (Emoji) -> Unit = { PlatformEmojiPlaceholder(it, Modifier.fillMaxSize()) },
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
     val download = LocalEmojiDownloader.current
     WithNotoEmoji(
         text = text,
-        content = content,
-        createInlineTextContent = { found -> createNotoSvgInlineContent(found.emoji, download) },
-        fixedSize = fixedSize,
+        ratio = {
+            details.notoImageRatio.takeIf { it > 0f }
+                ?: 1f
+        },
+        placeholder = placeholder,
+        createDisplay = { emoji -> createNotoSvgContent(emoji, download) },
+        content = content
     )
 }
 
-private suspend fun createNotoLottieInlineContent(
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun WithNotoImageEmoji(
+    text: CharSequence,
+    fixedSize: Boolean,
+    content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
+): Unit = WithNotoImageEmoji(text = text, content = content)
+
+
+private suspend fun createNotoLottieContent(
     emoji: Emoji,
     iterations: Int,
     speed: Float,
     download: suspend (EmojiUrl) -> ByteArray
-): InlineTextContent? {
-    if (!emoji.details.notoAnimated) return createNotoSvgInlineContent(emoji, download)
+): (@Composable () -> Unit)? {
+    if (!emoji.details.hasNotoAnimation) return createNotoSvgContent(emoji, download)
     try {
         val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.Lottie))
         val animation = LottieAnimation.create(bytes)
-        return InlineTextContent(
-            placeholder = Placeholder(1.em, 1.em / animation.sizeRatio(), PlaceholderVerticalAlign.Center),
-            children = {
-                LottieAnimation(animation, iterations, 1f, speed, "${emoji.details.description} emoji", Modifier.fillMaxSize())
-            }
-        )
+        return {
+            LottieAnimation(animation, iterations, 1f, speed, "${emoji.details.description} emoji", Modifier.fillMaxSize())
+        }
     } catch (t: Throwable) {
         println("${t::class.simpleName}: ${t.message}")
-        return createNotoSvgInlineContent(emoji, download)
+        return createNotoSvgContent(emoji, download)
     }
 }
 
@@ -202,7 +145,6 @@ private suspend fun createNotoLottieInlineContent(
  * @param text The text to with Emoji UTF characters.
  * @param iterations The number of times that the animations will be played (default is infinite).
  * @param speed Speed at which the animations will be rendered.
- * @param fixedSize If true, then the emoji will not be resized once downloaded.
  * @param content A lambda that receives the `AnnotatedString` and its corresponding `InlineTextContent` map
  *                These should be used to display: `{ astr, map -> Text(astr, inlineContent = map) }`.
  */
@@ -211,18 +153,32 @@ public fun WithNotoAnimatedEmoji(
     text: CharSequence,
     iterations: Int = Int.MAX_VALUE,
     speed: Float = 1f,
-    fixedSize: Boolean = false,
+    placeholder: @Composable (Emoji) -> Unit = { PlatformEmojiPlaceholder(it, Modifier.fillMaxSize()) },
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 ) {
     val download = LocalEmojiDownloader.current
     WithNotoEmoji(
         text = text,
+        ratio = {
+            details.notoAnimationRatio.takeIf { it > 0f }
+                ?: details.notoImageRatio.takeIf { it > 0f }
+                ?: 1f
+        },
+        placeholder = placeholder,
+        createDisplay = { emoji -> createNotoLottieContent(emoji, iterations, speed, download) },
         content = content,
-        createInlineTextContent = { found -> createNotoLottieInlineContent(found.emoji, iterations, speed, download) },
-        fixedSize = fixedSize
     )
 }
 
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun WithNotoAnimatedEmoji(
+    text: CharSequence,
+    iterations: Int = Int.MAX_VALUE,
+    speed: Float = 1f,
+    fixedSize: Boolean,
+    content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
+): Unit = WithNotoAnimatedEmoji(text = text, iterations = iterations, speed = speed, content = content)
 /**
  * Creates an annotated String and a `InlineTextContent` map from a text containing Emoji characters.
  *
@@ -237,6 +193,13 @@ public fun WithNotoAnimatedEmoji(
 @Composable
 public expect fun WithPlatformEmoji(
     text: CharSequence,
-    fixedImageSize: Boolean = false,
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
 )
+
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun WithPlatformEmoji(
+    text: CharSequence,
+    fixedImageSize: Boolean,
+    content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
+): Unit = WithPlatformEmoji(text, content)

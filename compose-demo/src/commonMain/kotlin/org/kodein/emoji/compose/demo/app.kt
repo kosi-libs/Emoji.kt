@@ -2,6 +2,7 @@ package org.kodein.emoji.compose.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -46,9 +47,10 @@ fun App() {
             }
             NotoAnimatedEmoji(
                 emoji = Emoji.ImpSmile,
-                modifier = Modifier.size(64.dp),
+                modifier = Modifier.height(92.dp),
                 iterations = 2,
-                stopAt = 0.76f
+                stopAt = 0.76f,
+                placeholder = { Box(it) }
             )
         }
     }

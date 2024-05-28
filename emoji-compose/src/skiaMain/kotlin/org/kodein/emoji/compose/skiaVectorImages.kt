@@ -85,6 +85,9 @@ internal actual fun LottieAnimation(
     contentDescription: String,
     modifier: Modifier
 ) {
+    require(iterations > 0) { "Invalid iterations" }
+    require(stopAt in 0f..1f) { "Invalid stopAt" }
+    require(speed > 0f) { "Invalid speed" }
     val time = remember { Animatable(0f) }
     LaunchedEffect(Unit) {
         repeat(iterations) {

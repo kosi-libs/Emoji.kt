@@ -21,7 +21,8 @@ data class AnnotatedForm(
     val altForms: List<Form>,
     val emoticons: List<String>,
     val aliases: List<String>,
-    val notoAnimated: Boolean
+    val hasNotoImage: Boolean,
+    val hasNotoAnimation: Boolean
 )
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -61,7 +62,8 @@ fun annotate(grouppedForms: GrouppedForms, notoJsonFile: File): List<AnnotatedFo
             altForms = forms - mainForm,
             emoticons = notoEmoji.emoticons,
             aliases = aliases,
-            notoAnimated = notoEmoji.animated
+            hasNotoImage = true,
+            hasNotoAnimation = notoEmoji.animated
         )
     }
 
@@ -75,7 +77,8 @@ fun annotate(grouppedForms: GrouppedForms, notoJsonFile: File): List<AnnotatedFo
             altForms = forms - mainForm,
             emoticons = emptyList(),
             aliases = emptyList(),
-            notoAnimated = false
+            hasNotoImage = false,
+            hasNotoAnimation = false
         )
     }
 

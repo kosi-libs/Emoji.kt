@@ -4,10 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import kotlinx.coroutines.*
-import org.kodein.emoji.Emoji
-import org.kodein.emoji.EmojiFinder
-import org.kodein.emoji.EmojiTemplateCatalog
-import org.kodein.emoji.all
+import org.kodein.emoji.*
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -45,7 +42,7 @@ public class EmojiService private constructor(
             if (!::deferred.isInitialized) {
                 @OptIn(DelicateCoroutinesApi::class)
                 deferred = GlobalScope.async {
-                    val catalog = async(Dispatchers.Default) { EmojiTemplateCatalog(Emoji.all(), catalogBuilder) }
+                    val catalog = async(Dispatchers.Default) { EmojiTemplateCatalog(Emoji.list(), catalogBuilder) }
                     val finder = async(Dispatchers.Default) { EmojiFinder() }
                     EmojiService(catalog.await(), finder.await())
                 }

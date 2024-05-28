@@ -16,32 +16,40 @@ abstract class GenEmojis : DefaultTask() {
     abstract val notoJsonFile: RegularFileProperty
 
     @get:OutputDirectory
-    abstract val genDirectory: DirectoryProperty
+    abstract val genEmojiDirectory: DirectoryProperty
+
+    @get:OutputDirectory
+    abstract val genNotoDirectory: DirectoryProperty
+
+    @get:OutputDirectory
+    abstract val cacheDirectory: DirectoryProperty
 
     init {
         group = "build"
-        unicodeTextFile.convention(project.layout.projectDirectory.file("src/emoji/emoji-test.txt"))
-        notoJsonFile.convention(project.layout.projectDirectory.file("src/emoji/emoji_15_0_ordering.json"))
-        genDirectory.convention(project.layout.buildDirectory.dir("gen/emoji"))
+        unicodeTextFile.convention(project.layout.projectDirectory.file("definitions/emoji-test.txt"))
+        notoJsonFile.convention(project.layout.projectDirectory.file("definitions/emoji_15_0_ordering.json"))
+        genEmojiDirectory.convention(project.layout.buildDirectory.dir("gen/emoji"))
+        genNotoDirectory.convention(project.layout.buildDirectory.dir("gen/noto"))
+        cacheDirectory.convention(project.layout.buildDirectory.dir("cache/noto"))
     }
 
-    // Generates emojis
 
-
-    @OptIn(ExperimentalStdlibApi::class)
     @TaskAction
     private fun execute() {
         val entries = getEntriesFromFile(unicodeTextFile.get().asFile)
         val forms = entriesToForms(entries)
         val annotatedForms = annotate(forms, notoJsonFile.get().asFile)
 
-        val outputDir = genDirectory.get().asFile
-        outputDir.deleteRecursively()
-        outputDir.mkdirs()
+        val cacheDir = cacheDirectory.get().asFile
+        cacheDir.mkdirs()
+        downloadNotoFiles(annotatedForms, cacheDir)
 
-        val tree = genEmojiFiles(outputDir, annotatedForms)
+        val emojiOutputDir = genEmojiDirectory.get().asFile
+        emojiOutputDir.deleteRecursively()
+        emojiOutputDir.mkdirs()
 
-        genCollections(outputDir, tree)
+        val tree = genEmojiFiles(emojiOutputDir, annotatedForms, cacheDir)
+        genCollections(emojiOutputDir, tree)
     }
 
 }

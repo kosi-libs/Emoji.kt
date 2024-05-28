@@ -12,3 +12,5 @@ allprojects {
         if (name == "kotlinStoreYarnLock") enabled = false
     }
 }
+
+val genEmojis = tasks.create<GenEmojis>("genEmojis")

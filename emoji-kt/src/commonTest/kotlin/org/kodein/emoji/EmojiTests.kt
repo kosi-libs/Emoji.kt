@@ -22,7 +22,7 @@ class EmojiTests {
 
     @Test
     fun replaceEmojis() {
-        val catalog = EmojiTemplateCatalog(Emoji.all())
+        val catalog = EmojiTemplateCatalog(Emoji.list())
         assertEquals(
             expected = "When I see 🧑🏼‍🤝‍🧑🏾, my ❤️ goes 💥 😀!",
             actual = catalog.replace("When I see :people-holding-hands~medium-light,medium-dark:, my <3 goes :collision: :D!")
@@ -43,6 +43,6 @@ class EmojiTests {
 
     @Test
     fun countEmoji() {
-        assertEquals(emojiCount, Emoji.all().size)
+        assertEquals(emojiCount, Emoji.list().size)
     }
 }

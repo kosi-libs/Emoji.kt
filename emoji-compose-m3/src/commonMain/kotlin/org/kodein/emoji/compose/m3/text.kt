@@ -46,11 +46,57 @@ public fun TextWithPlatformEmoji(
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
-    fixedEmojiSize: Boolean = false,
 ) {
     WithPlatformEmoji(
         text = text,
-        fixedImageSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
+        Text(
+            text = emojiAnnotatedString,
+            modifier = modifier,
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            minLines = minLines,
+            inlineContent = emojiInlineContent,
+            onTextLayout = onTextLayout,
+            style = style
+        )
+    }
+}
+
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun TextWithPlatformEmoji(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean,
+) {
+    WithPlatformEmoji(
+        text = text,
     ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
@@ -103,11 +149,58 @@ public fun TextWithPlatformEmoji(
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
-    fixedEmojiSize: Boolean = false,
 ) {
     WithPlatformEmoji(
         text = text,
-        fixedImageSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
+        Text(
+            text = emojiAnnotatedString,
+            modifier = modifier,
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            minLines = minLines,
+            inlineContent = inlineContent + emojiInlineContent,
+            onTextLayout = onTextLayout,
+            style = style
+        )
+    }
+}
+
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun TextWithPlatformEmoji(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    inlineContent: Map<String, InlineTextContent> = mapOf(),
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean,
+) {
+    WithPlatformEmoji(
+        text = text,
     ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
@@ -157,11 +250,57 @@ public fun TextWithNotoImageEmoji(
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
-    fixedEmojiSize: Boolean = false,
 ) {
     WithNotoImageEmoji(
         text = text,
-        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
+        Text(
+            text = emojiAnnotatedString,
+            modifier = modifier,
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            minLines = minLines,
+            inlineContent = emojiInlineContent,
+            onTextLayout = onTextLayout,
+            style = style
+        )
+    }
+}
+
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun TextWithNotoImageEmoji(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean,
+) {
+    WithNotoImageEmoji(
+        text = text,
     ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
@@ -212,11 +351,58 @@ public fun TextWithNotoImageEmoji(
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
-    fixedEmojiSize: Boolean = false,
 ) {
     WithNotoImageEmoji(
         text = text,
-        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
+        Text(
+            text = emojiAnnotatedString,
+            modifier = modifier,
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            minLines = minLines,
+            inlineContent = inlineContent + emojiInlineContent,
+            onTextLayout = onTextLayout,
+            style = style
+        )
+    }
+}
+
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun TextWithNotoImageEmoji(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    inlineContent: Map<String, InlineTextContent> = mapOf(),
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+    fixedEmojiSize: Boolean,
+) {
+    WithNotoImageEmoji(
+        text = text,
     ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
@@ -270,13 +456,63 @@ public fun TextWithNotoAnimatedEmoji(
     style: TextStyle = LocalTextStyle.current,
     emojiAnimationIterations: Int = Int.MAX_VALUE,
     emojiAnimationSpeed: Float = 1f,
-    fixedEmojiSize: Boolean = false,
 ) {
     WithNotoAnimatedEmoji(
         text = text,
         iterations = emojiAnimationIterations,
         speed = emojiAnimationSpeed,
-        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
+        Text(
+            text = emojiAnnotatedString,
+            modifier = modifier,
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            minLines = minLines,
+            inlineContent = emojiInlineContent,
+            onTextLayout = onTextLayout,
+            style = style
+        )
+    }
+}
+
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun TextWithNotoAnimatedEmoji(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+    emojiAnimationIterations: Int = Int.MAX_VALUE,
+    emojiAnimationSpeed: Float = 1f,
+    fixedEmojiSize: Boolean,
+) {
+    WithNotoAnimatedEmoji(
+        text = text,
+        iterations = emojiAnimationIterations,
+        speed = emojiAnimationSpeed,
     ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
@@ -331,13 +567,64 @@ public fun TextWithNotoAnimatedEmoji(
     style: TextStyle = LocalTextStyle.current,
     emojiAnimationIterations: Int = Int.MAX_VALUE,
     emojiAnimationSpeed: Float = 1f,
-    fixedEmojiSize: Boolean = false,
 ) {
     WithNotoAnimatedEmoji(
         text = text,
         iterations = emojiAnimationIterations,
         speed = emojiAnimationSpeed,
-        fixedSize = fixedEmojiSize,
+    ) { emojiAnnotatedString, emojiInlineContent ->
+        Text(
+            text = emojiAnnotatedString,
+            modifier = modifier,
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            minLines = minLines,
+            inlineContent = inlineContent + emojiInlineContent,
+            onTextLayout = onTextLayout,
+            style = style
+        )
+    }
+}
+
+@Deprecated("fixedSize is now ignored (size ratio is now part of emoji details)")
+@Composable
+public fun TextWithNotoAnimatedEmoji(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    inlineContent: Map<String, InlineTextContent> = mapOf(),
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+    emojiAnimationIterations: Int = Int.MAX_VALUE,
+    emojiAnimationSpeed: Float = 1f,
+    fixedEmojiSize: Boolean,
+) {
+    WithNotoAnimatedEmoji(
+        text = text,
+        iterations = emojiAnimationIterations,
+        speed = emojiAnimationSpeed,
     ) { emojiAnnotatedString, emojiInlineContent ->
         Text(
             text = emojiAnnotatedString,
