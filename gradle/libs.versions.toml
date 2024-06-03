@@ -1,6 +1,6 @@
 [versions]
 android-activityCompose = "1.9.0"
-android-lottie = "6.3.0"
+android-lottie = "6.4.0"
 android-svg = "1.4"
 compose = "1.6.10"
 

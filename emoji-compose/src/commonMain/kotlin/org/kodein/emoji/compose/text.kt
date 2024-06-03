@@ -45,7 +45,6 @@ private fun WithNotoEmoji(
                 append(text.subSequence(start, found.start))
             else
                 append(text.substring(start, found.start))
-            println(found.emoji)
             val inlineContentID = "emoji:${found.emoji}"
             inlineContent[inlineContentID] = InlineTextContent(Placeholder(found.emoji.ratio().em, 1.em, PlaceholderVerticalAlign.Center)) {
                 var display: (@Composable () -> Unit)? by remember { mutableStateOf(null) }

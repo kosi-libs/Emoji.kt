@@ -60,6 +60,5 @@ android {
 }
 
 compose {
-    desktop.application.mainClass = "MainKt"
-    experimental.web.application {}
+    desktop.application.mainClass = "MainDesktopKt"
 }
