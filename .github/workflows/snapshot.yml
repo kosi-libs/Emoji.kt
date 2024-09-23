@@ -17,8 +17,8 @@ jobs:
   build-upload:
     runs-on: macOS-latest
     env:
-      SONATYPE_USERNAME: ${{ secrets.sonatype_username }}
-      SONATYPE_PASSWORD: ${{ secrets.sonatype_password }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_TOKEN_PASSWORD }}
     steps:
       - name: Setup
         uses: kosi-libs/kodein-internal-github-actions/setup@main
