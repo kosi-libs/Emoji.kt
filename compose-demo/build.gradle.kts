@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     kotlin("multiplatform")
@@ -9,6 +9,7 @@ plugins {
 
 kotlin {
     jvm()
+    jvmToolchain(17)
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {

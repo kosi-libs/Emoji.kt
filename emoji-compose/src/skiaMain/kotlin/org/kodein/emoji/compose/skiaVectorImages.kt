@@ -104,7 +104,6 @@ internal actual fun LottieAnimation(
     }
 
     val invalidationController = remember { InvalidationController() }
-    animation.animation.seekFrameTime(time.value, invalidationController)
     Canvas(
         modifier = modifier
             .semantics {
@@ -112,6 +111,7 @@ internal actual fun LottieAnimation(
                 this.role = Role.Image
             }
     ) {
+        animation.animation.seekFrameTime(time.value, invalidationController)
         drawIntoCanvas {
             animation.animation.render(
                 canvas = it.nativeCanvas,
