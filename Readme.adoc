@@ -327,4 +327,4 @@ EmojiService.catalogBuilder = {
 
 == Supported by
 
-[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
+image::https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg[JetBrains logo.,link=https://jb.gg/OpenSourceSupport]
