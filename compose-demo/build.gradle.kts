@@ -48,7 +48,7 @@ kotlin {
 
 android {
     namespace = "org.kodein.emoji.compose.demo"
-    setCompileSdkVersion(34)
+    setCompileSdkVersion(35)
 
     defaultConfig {
         minSdk = 21
