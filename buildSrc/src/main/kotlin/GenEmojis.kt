@@ -35,7 +35,7 @@ abstract class GenEmojis : DefaultTask() {
 
 
     @TaskAction
-    private fun execute() {
+    internal fun execute() {
         val entries = getEntriesFromFile(unicodeTextFile.get().asFile)
         val forms = entriesToForms(entries)
         val annotatedForms = annotate(forms, notoJsonFile.get().asFile)

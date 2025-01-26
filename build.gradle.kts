@@ -13,4 +13,4 @@ allprojects {
     }
 }
 
-val genEmojis = tasks.create<GenEmojis>("genEmojis")
+val genEmojis = tasks.register<GenEmojis>("genEmojis")
