@@ -47,15 +47,10 @@ private fun WithNotoEmoji(
                 append(text.substring(start, found.start))
             val inlineContentID = "emoji:${found.emoji}"
             inlineContent[inlineContentID] = InlineTextContent(Placeholder(found.emoji.ratio().em, 1.em, PlaceholderVerticalAlign.Center)) {
-                var display: (@Composable () -> Unit)? by remember { mutableStateOf(null) }
-                LaunchedEffect(null) {
-                    display = createDisplay(found.emoji)
+                val display by produceState<(@Composable () -> Unit)?>(null, found.emoji) {
+                    value = createDisplay(found.emoji)
                 }
-                if (display == null) {
-                    placeholder(found.emoji)
-                } else {
-                    display!!.invoke()
-                }
+                display?.invoke() ?: placeholder(found.emoji)
             }
             appendInlineContent(inlineContentID)
             start = found.end
