@@ -275,7 +275,7 @@ public fun Emoji.Companion.allSubgroups(): Set<Pair<String, String>> = allEmojiG
  * WARNING: This can be quite heavy to construct.
  * This method should be called in background and its result should be cached.
  */
-public fun Emoji.allOf(group: String): List<Emoji> {
+public fun Emoji.Companion.allOf(group: String): List<Emoji> {
     val groupMap = allEmojiGroups()[group] ?: error("No such emoji group: $group")
     return groupMap.values.flatMap { it() }
 }
@@ -286,7 +286,7 @@ public fun Emoji.allOf(group: String): List<Emoji> {
  * WARNING: This can be quite heavy to construct.
  * This method should be called in background and its result should be cached.
  */
-public fun Emoji.allOf(group: String, subgroup: String): List<Emoji> {
+public fun Emoji.Companion.allOf(group: String, subgroup: String): List<Emoji> {
     val groupMap = allEmojiGroups()[group] ?: error("No such emoji group: $group")
     val subgroupFun = groupMap[subgroup] ?: error("No such emoji group: $group")
     return subgroupFun()
