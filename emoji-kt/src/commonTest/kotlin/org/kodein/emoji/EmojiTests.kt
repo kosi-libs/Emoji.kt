@@ -45,4 +45,17 @@ class EmojiTests {
     fun countEmoji() {
         assertEquals(emojiCount, Emoji.list().size)
     }
+
+    @Test
+    fun unicodeVersionProps() {
+        val testVersion = UnicodeVersion(15,2)
+        assertEquals(
+            expected = 15,
+            actual = testVersion.major
+        )
+        assertEquals(
+            expected = 2,
+            actual = testVersion.minor
+        )
+    }
 }
