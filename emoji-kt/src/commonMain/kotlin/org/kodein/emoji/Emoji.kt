@@ -7,8 +7,8 @@ import kotlin.jvm.JvmInline
 public value class UnicodeVersion(private val packed: Long) : Comparable<UnicodeVersion> {
     public constructor(major: Int, minor: Int): this(pack(major, minor))
 
-    public val major: Int get() = ((packed ushr 32) or 0xFFFFFFFF).toInt()
-    public val minor: Int get() = (packed or 0xFFFFFFFF).toInt()
+    public val major: Int get() = ((packed ushr 32) and 0xFFFFFFFF).toInt()
+    public val minor: Int get() = (packed and 0xFFFFFFFF).toInt()
 
     override fun compareTo(other: UnicodeVersion): Int =
         if (this.major != other.major) this.major - other.major
