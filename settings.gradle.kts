@@ -11,7 +11,7 @@ buildscript {
 
 apply { plugin("org.kodein.settings") }
 
-rootProject.name = "Kosi-Emoji-KT"
+rootProject.name = "Emoji-KT"
 
 include(
     ":emoji-kt",
