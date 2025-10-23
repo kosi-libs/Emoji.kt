@@ -18,8 +18,6 @@ jobs:
     steps:
       - name: Setup
         uses: kosi-libs/kodein-internal-github-actions/setup@main
-        with:
-          java-version: 21
       - name: Upload
         run: ./gradlew publishAggregationToCentralPortal
         shell: bash
