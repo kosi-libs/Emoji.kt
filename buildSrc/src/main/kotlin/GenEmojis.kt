@@ -27,7 +27,7 @@ abstract class GenEmojis : DefaultTask() {
     init {
         group = "build"
         unicodeTextFile.convention(project.layout.projectDirectory.file("definitions/emoji-test.txt"))
-        notoJsonFile.convention(project.layout.projectDirectory.file("definitions/emoji_15_0_ordering.json"))
+        notoJsonFile.convention(project.layout.projectDirectory.file("definitions/emoji_17_0_ordering.json"))
         genEmojiDirectory.convention(project.layout.buildDirectory.dir("gen/emoji"))
         genNotoDirectory.convention(project.layout.buildDirectory.dir("gen/noto"))
         cacheDirectory.convention(project.layout.buildDirectory.dir("cache/noto"))

@@ -10,11 +10,5 @@ on:
       - '!./github/workflow/test.yml'
 
 jobs:
-  check:
-    runs-on: macOS-latest
-    steps:
-      - name: Setup
-        uses: kosi-libs/kodein-internal-github-actions/setup@main
-      - name: Check
-        run: ./gradlew --stacktrace check
-        shell: bash
+  unit-tests:
+    uses: kosi-libs/kodein-internal-github-actions/.github/workflows/unit-tests.yml@main
