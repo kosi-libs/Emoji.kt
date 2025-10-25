@@ -7,11 +7,14 @@ import okio.use
 import java.io.File
 
 
+@Suppress("PropertyName")
 private data class NotoEmoji(
     val base: List<Int>,
     val emoticons: List<String>,
     val shortcodes: List<String>,
-    val animated: Boolean
+    val animated: Boolean,
+    val tone_group: String,
+    val group_variant: String,
 )
 
 private data class NotoGroup(val emoji: List<NotoEmoji>)
@@ -45,7 +48,13 @@ fun annotate(grouppedForms: GrouppedForms, notoJsonFile: File): List<AnnotatedFo
 
     notoEmojis.forEach { notoEmoji ->
         val formIndex = mGrouppedForms.indexOfFirst { list -> list.any { it.entry.code == notoEmoji.base } }
-        check(formIndex != -1) { "No match found for $notoEmoji (${notoEmoji.base.joinToString(" ") { it.toString(radix = 16) }})" }
+        if (formIndex == -1) {
+            if (notoEmoji.tone_group.isNotEmpty() || notoEmoji.group_variant.isNotEmpty()) {
+                // This is an emoji that belongs to a group. It should have been a variant ¯\_(ツ)_/¯.
+                return@forEach
+            }
+            error("No match found for $notoEmoji (${notoEmoji.base.joinToString(" ") { it.toString(radix = 16) }})")
+        }
         val forms = mGrouppedForms.removeAt(formIndex)
         val mainForm = forms.first { it.entry.code == notoEmoji.base }
         val aliases = notoEmoji.shortcodes
