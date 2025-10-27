@@ -14,6 +14,7 @@ import org.kodein.emoji.Emoji
 import org.w3c.fetch.Response
 
 
+@OptIn(ExperimentalWasmJsInterop::class)
 internal actual suspend fun platformDownloadBytes(url: String): ByteArray {
     val response = window.fetch(url).await<Response>()
     val bufferPromise = response.arrayBuffer()
