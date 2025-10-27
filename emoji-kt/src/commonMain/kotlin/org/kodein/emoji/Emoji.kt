@@ -212,20 +212,30 @@ internal class SkinTone2EmojiZWJImpl internal constructor(
 ) : SkinTone1EmojiImpl(details, sk1c), SkinTone2Emoji {
     private val variations = HashMap<Pair<SkinTone, SkinTone>, Toned2Emoji>()
     override fun withSkinTone(tone1: SkinTone, tone2: SkinTone): Toned2Emoji = variations.getOrPut(Pair(tone1, tone2)) {
-        Toned2EmojiImpl(
-            details = Emoji.Details(
-                string = zwjTemplate.substring(0, sk21c) + tone1.chars + zwjTemplate.substring(sk21c, sk22c) + tone2.chars + zwjTemplate.substring(sk22c),
-                description = details.description + ", ${tone1.alias} & ${tone2.alias} skin tones",
-                unicodeVersion = zwjUnicodeVersion,
-                aliases = details.aliases.map { it + "~${tone1.alias},${tone2.alias}" },
-                emoticons = emptyList(),
-                notoImageRatio = details.notoImageRatio,
-                notoAnimationRatio = details.notoAnimationRatio
-            ),
-            original = this,
-            tone1 = tone1,
-            tone2 = tone2
-        )
+        if (tone1 == tone2) {
+            val toned1Emoji = withSkinTone(tone1)
+            Toned2EmojiImpl(
+                details = toned1Emoji.details,
+                original = this,
+                tone1 = tone1,
+                tone2 = tone2
+            )
+        } else {
+            Toned2EmojiImpl(
+                details = Emoji.Details(
+                    string = zwjTemplate.substring(0, sk21c) + tone1.chars + zwjTemplate.substring(sk21c, sk22c) + tone2.chars + zwjTemplate.substring(sk22c),
+                    description = details.description + ", ${tone1.alias} & ${tone2.alias} skin tones",
+                    unicodeVersion = zwjUnicodeVersion,
+                    aliases = details.aliases.map { it + "~${tone1.alias},${tone2.alias}" },
+                    emoticons = emptyList(),
+                    notoImageRatio = details.notoImageRatio,
+                    notoAnimationRatio = details.notoAnimationRatio
+                ),
+                original = this,
+                tone1 = tone1,
+                tone2 = tone2
+            )
+        }
     }
 }
 

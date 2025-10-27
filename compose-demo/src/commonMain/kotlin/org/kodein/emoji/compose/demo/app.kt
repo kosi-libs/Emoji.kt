@@ -2,24 +2,21 @@ package org.kodein.emoji.compose.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.EmptyPath
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.kodein.emoji.Emoji
 import org.kodein.emoji.SkinTone
-import org.kodein.emoji.compose.*
+import org.kodein.emoji.compose.NotoAnimatedEmoji
 import org.kodein.emoji.compose.m2.TextWithNotoAnimatedEmoji
 import org.kodein.emoji.compose.m2.TextWithNotoImageEmoji
 import org.kodein.emoji.compose.m2.TextWithPlatformEmoji
-import org.kodein.emoji.light_mediumDark
+import org.kodein.emoji.compose.withEmoji
 import org.kodein.emoji.mediumLight_mediumDark
 import org.kodein.emoji.people_body.family.PeopleHoldingHands
 import org.kodein.emoji.people_body.person_sport.PeopleWrestling
@@ -62,10 +59,8 @@ fun App() {
                         append("Unicode 17.0:")
                         SkinTone.entries.forEach { t1 ->
                             SkinTone.entries.forEach { t2 ->
-                                if (t1 != t2) {
-                                    append(" ")
-                                    append(Emoji.PeopleWrestling.withSkinTone(t1, t2))
-                                }
+                                append(" ")
+                                append(Emoji.PeopleWrestling.withSkinTone(t1, t2))
                             }
                         }
                     }
