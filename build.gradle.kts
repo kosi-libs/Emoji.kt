@@ -13,4 +13,8 @@ allprojects {
     }
 }
 
-val genEmojis = tasks.register<GenEmojis>("genEmojis")
+tasks.register<GenEmojis>("genEmojis")
+
+kodeinUploadRoot {
+    githubProjectName = "Emoji.kt"
+}
