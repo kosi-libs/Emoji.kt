@@ -16,6 +16,10 @@ repositories {
 
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 //noinspection UseTomlInstead
 dependencies {
     implementation(gradleApi())
