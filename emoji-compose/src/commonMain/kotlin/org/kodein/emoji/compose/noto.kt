@@ -104,8 +104,6 @@ public fun NotoAnimatedEmoji(
     speed: Float = 1f,
     placeholder: @Composable (Modifier) -> Unit = { PlatformEmojiPlaceholder(emoji, it) }
 ) {
-    require(emoji.details.hasNotoAnimation) { "Emoji has not Noto animation" }
-
     if (!emoji.details.hasNotoAnimation) {
         NotoImageEmoji(emoji, modifier, placeholder)
         return

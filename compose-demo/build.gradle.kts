@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
     kotlin("multiplatform")
     id("com.android.application")
@@ -11,7 +9,7 @@ kotlin {
     jvm()
     jvmToolchain(17)
 
-    @OptIn(ExperimentalWasmDsl::class)
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
@@ -48,7 +46,7 @@ kotlin {
 
 android {
     namespace = "org.kodein.emoji.compose.demo"
-    setCompileSdkVersion(35)
+    setCompileSdkVersion(36)
 
     defaultConfig {
         minSdk = 21

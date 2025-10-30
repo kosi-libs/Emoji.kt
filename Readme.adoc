@@ -1,7 +1,7 @@
 = Emoji.kt: Kotlin/Multiplatform Emoji
 :icons: font
 :toc: preamble
-:version: 2.0.1
+:version: 2.3.0
 
 *Emoji.kt Core* provides Kotlin/Multiplatform support for:
 
