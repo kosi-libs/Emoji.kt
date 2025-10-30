@@ -102,6 +102,7 @@ public fun NotoAnimatedEmoji(
     iterations: Int = Int.MAX_VALUE,
     stopAt: Float = 1f,
     speed: Float = 1f,
+    skipLastFrame: Boolean = false,
     placeholder: @Composable (Modifier) -> Unit = { PlatformEmojiPlaceholder(emoji, it) }
 ) {
     if (!emoji.details.hasNotoAnimation) {
@@ -129,7 +130,7 @@ public fun NotoAnimatedEmoji(
     val r = result
     when {
         r != null && r.isSuccess -> {
-            LottieAnimation(result!!.getOrThrow(), iterations, stopAt, speed, "${emoji.details.description} emoji", animationModifier)
+            LottieAnimation(result!!.getOrThrow(), iterations, skipLastFrame, stopAt, speed, "${emoji.details.description} emoji", animationModifier)
         }
         r != null && r.isFailure && emoji.details.hasNotoImage -> {
             NotoImageEmoji(emoji, modifier, placeholder)

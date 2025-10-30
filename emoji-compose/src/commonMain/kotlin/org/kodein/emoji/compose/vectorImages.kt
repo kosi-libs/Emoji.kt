@@ -25,6 +25,7 @@ internal expect class LottieAnimation {
 internal expect fun LottieAnimation(
     animation: LottieAnimation,
     iterations: Int,
+    skipLastFrame: Boolean,
     stopAt: Float,
     speed: Float,
     contentDescription: String,

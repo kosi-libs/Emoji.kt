@@ -4,9 +4,11 @@ import android.graphics.RectF
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Canvas
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.semantics.Role
@@ -15,14 +17,11 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.LottieCompositionFactory
-import com.airbnb.lottie.compose.LottieClipSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.airbnb.lottie.compose.LottieAnimation as ALottieAnimation
 import java.io.ByteArrayInputStream
 import kotlin.math.roundToInt
+import com.airbnb.lottie.compose.LottieAnimation as ALottieAnimation
 import com.caverock.androidsvg.SVG as ASVG
 
 
@@ -66,6 +65,7 @@ internal actual class LottieAnimation(val composition: LottieComposition) {
 internal actual fun LottieAnimation(
     animation: LottieAnimation,
     iterations: Int,
+    skipLastFrame: Boolean,
     stopAt: Float,
     speed: Float,
     contentDescription: String,
@@ -76,10 +76,15 @@ internal actual fun LottieAnimation(
     require(speed > 0f) { "Invalid speed" }
     val progress = remember { Animatable(0f) }
     LaunchedEffect(Unit) {
+        val end =
+            if (skipLastFrame) {
+                1f - (1f / animation.composition.durationFrames)
+            }
+            else 1f
         repeat(iterations) {
             progress.snapTo(0f)
             val isLastIteration = it == (iterations - 1)
-            val target = if (isLastIteration) stopAt else 1f
+            val target = if (isLastIteration) end * stopAt else end
             progress.animateTo(
                 targetValue = target,
                 animationSpec = tween((animation.composition.duration * speed * target).roundToInt(), easing = LinearEasing)

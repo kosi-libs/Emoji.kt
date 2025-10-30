@@ -116,6 +116,7 @@ public fun WithNotoImageEmoji(
 private suspend fun createNotoLottieContent(
     emoji: Emoji,
     iterations: Int,
+    skipLastFrame: Boolean,
     speed: Float,
     download: suspend (EmojiUrl) -> ByteArray
 ): (@Composable () -> Unit)? {
@@ -124,7 +125,7 @@ private suspend fun createNotoLottieContent(
         val bytes = download(EmojiUrl.from(emoji, EmojiUrl.Type.Lottie))
         val animation = LottieAnimation.create(bytes)
         return {
-            LottieAnimation(animation, iterations, 1f, speed, "${emoji.details.description} emoji", Modifier.fillMaxSize())
+            LottieAnimation(animation, iterations, skipLastFrame, 1f, speed, "${emoji.details.description} emoji", Modifier.fillMaxSize())
         }
     } catch (t: Throwable) {
         println("${t::class.simpleName}: ${t.message}")
@@ -146,6 +147,7 @@ private suspend fun createNotoLottieContent(
 public fun WithNotoAnimatedEmoji(
     text: CharSequence,
     iterations: Int = Int.MAX_VALUE,
+    skipLastFrame: Boolean = false,
     speed: Float = 1f,
     placeholder: @Composable (Emoji) -> Unit = { PlatformEmojiPlaceholder(it, Modifier.fillMaxSize()) },
     content: @Composable (AnnotatedString, Map<String, InlineTextContent>) -> Unit
@@ -159,7 +161,7 @@ public fun WithNotoAnimatedEmoji(
                 ?: 1f
         },
         placeholder = placeholder,
-        createDisplay = { emoji -> createNotoLottieContent(emoji, iterations, speed, download) },
+        createDisplay = { emoji -> createNotoLottieContent(emoji, iterations, skipLastFrame, speed, download) },
         content = content,
     )
 }

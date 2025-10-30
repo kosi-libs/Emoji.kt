@@ -21,6 +21,7 @@ import org.kodein.emoji.mediumLight_mediumDark
 import org.kodein.emoji.people_body.family.PeopleHoldingHands
 import org.kodein.emoji.people_body.person_sport.PeopleWrestling
 import org.kodein.emoji.smileys_emotion.emotion.Collision
+import org.kodein.emoji.smileys_emotion.face_hand.Peeking
 import org.kodein.emoji.smileys_emotion.face_negative.ImpSmile
 import org.kodein.emoji.smileys_emotion.face_smiling.Smile
 import org.kodein.emoji.smileys_emotion.heart.RedHeart
@@ -66,13 +67,25 @@ fun App() {
                     }
                 )
             }
-            NotoAnimatedEmoji(
-                emoji = Emoji.ImpSmile,
-                modifier = Modifier.height(92.dp),
-                iterations = 2,
-                stopAt = 0.76f,
-                placeholder = { Box(it) }
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(64.dp)
+            ) {
+                NotoAnimatedEmoji(
+                    emoji = Emoji.ImpSmile,
+                    modifier = Modifier.height(92.dp),
+                    iterations = 2,
+                    stopAt = 0.76f,
+                    placeholder = { Box(it) }
+                )
+                NotoAnimatedEmoji(
+                    emoji = Emoji.Peeking,
+                    modifier = Modifier.height(92.dp),
+                    iterations = 1,
+                    skipLastFrame = true,
+                    placeholder = { Box(it) }
+                )
+            }
         }
     }
 }

@@ -80,6 +80,7 @@ internal actual class LottieAnimation(val animation: Animation) {
 internal actual fun LottieAnimation(
     animation: LottieAnimation,
     iterations: Int,
+    skipLastFrame: Boolean,
     stopAt: Float,
     speed: Float,
     contentDescription: String,
@@ -90,12 +91,15 @@ internal actual fun LottieAnimation(
     require(speed > 0f) { "Invalid speed" }
     val time = remember { Animatable(0f) }
     LaunchedEffect(Unit) {
+        val duration =
+            if (skipLastFrame) animation.animation.duration - (1f / animation.animation.fPS)
+            else animation.animation.duration
         repeat(iterations) {
             time.snapTo(0f)
             val isLastIteration = it == (iterations - 1)
             val target =
-                if (isLastIteration) animation.animation.duration * stopAt
-                else animation.animation.duration
+                if (isLastIteration) duration * stopAt
+                else duration
             time.animateTo(
                 targetValue = target,
                 animationSpec = tween((target * 1_000 * speed).roundToInt(), easing = LinearEasing)
