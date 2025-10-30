@@ -105,6 +105,9 @@ internal actual fun LottieAnimation(
                 animationSpec = tween((target * 1_000 * speed).roundToInt(), easing = LinearEasing)
             )
         }
+        if (stopAt == 1f) {
+            time.snapTo(0f)
+        }
     }
 
     val invalidationController = remember { InvalidationController() }

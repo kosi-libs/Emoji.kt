@@ -90,6 +90,9 @@ internal actual fun LottieAnimation(
                 animationSpec = tween((animation.composition.duration * speed * target).roundToInt(), easing = LinearEasing)
             )
         }
+        if (stopAt == 1f) {
+            progress.snapTo(0f)
+        }
     }
 
     ALottieAnimation(
