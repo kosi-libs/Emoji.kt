@@ -14,8 +14,6 @@ import org.kodein.emoji.Emoji
 import org.kodein.emoji.findEmoji
 
 
-internal expect fun AnnotatedString.Builder.appendNotoPlaceholder(emoji: Emoji, inlineContent: MutableMap<String, InlineTextContent>)
-
 /**
  * Replaces all shortcodes (i.e. :emoji: or :emoji~skintone:) with their actual corresponding emojis.
  */
@@ -182,7 +180,6 @@ public fun WithNotoAnimatedEmoji(
  * - On all other platforms: does not modify the text at all (map will be empty).
  *
  * @param text The text to with Emoji UTF characters.
- * @param fixedImageSize If true, then the emoji will not be resized once downloaded.
  * @param content A lambda that receives the `AnnotatedString` and its corresponding `InlineTextContent` map
  *                These should be used to display: `{ astr, map -> Text(astr, inlineContent = map) }`.
  */

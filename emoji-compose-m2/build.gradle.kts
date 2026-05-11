@@ -8,9 +8,9 @@ kotlin.kodein {
     allComposeUi()
 
     common.mainDependencies {
-        implementation(kotlin.compose.runtime)
-        implementation(kotlin.compose.foundation)
-        implementation(kotlin.compose.material)
+        implementation(libs.compose.runtime)
+        implementation(libs.compose.foundation)
+        implementation(libs.compose.material2)
 
         api(projects.emojiKt)
         api(projects.emojiCompose)

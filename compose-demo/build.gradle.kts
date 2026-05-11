@@ -14,6 +14,10 @@ kotlin {
         browser()
         binaries.executable()
     }
+    js {
+        browser()
+        binaries.executable()
+    }
 
     androidTarget()
 
@@ -30,15 +34,15 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(projects.emojiComposeM2)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(projects.emojiComposeM3)
         }
-        getByName("jvmMain").dependencies {
+        jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
-        getByName("androidMain").dependencies {
+        androidMain.dependencies {
             implementation(libs.android.activityCompose)
         }
     }
@@ -49,7 +53,7 @@ android {
     setCompileSdkVersion(36)
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
     }
 
     compileOptions {

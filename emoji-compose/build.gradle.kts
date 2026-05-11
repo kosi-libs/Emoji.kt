@@ -5,11 +5,12 @@ plugins {
 }
 
 kotlin.kodein {
+    jsEnvBrowserOnly()
     allComposeUi()
 
     common.mainDependencies {
-        implementation(kotlin.compose.runtime)
-        implementation(kotlin.compose.foundation)
+        implementation(libs.compose.runtime)
+        implementation(libs.compose.foundation)
 
         api(projects.emojiKt)
     }

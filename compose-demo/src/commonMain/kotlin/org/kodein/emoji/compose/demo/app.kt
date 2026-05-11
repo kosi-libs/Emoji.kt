@@ -2,7 +2,7 @@ package org.kodein.emoji.compose.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.ProvideTextStyle
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.sp
 import org.kodein.emoji.Emoji
 import org.kodein.emoji.SkinTone
 import org.kodein.emoji.compose.NotoAnimatedEmoji
-import org.kodein.emoji.compose.m2.TextWithNotoAnimatedEmoji
-import org.kodein.emoji.compose.m2.TextWithNotoImageEmoji
-import org.kodein.emoji.compose.m2.TextWithPlatformEmoji
+import org.kodein.emoji.compose.m3.TextWithNotoAnimatedEmoji
+import org.kodein.emoji.compose.m3.TextWithNotoImageEmoji
+import org.kodein.emoji.compose.m3.TextWithPlatformEmoji
 import org.kodein.emoji.compose.withEmoji
 import org.kodein.emoji.mediumLight_mediumDark
 import org.kodein.emoji.people_body.family.PeopleHoldingHands
