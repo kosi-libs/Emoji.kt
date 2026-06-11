@@ -16,6 +16,7 @@ kotlin.kodein {
     }
 
     android {
+        target.namespace = "org.kodein.emoji.compose"
         sources.mainDependencies {
             implementation(libs.android.svg)
             implementation(libs.android.lottie)
@@ -26,10 +27,6 @@ kotlin.kodein {
         dependsOn(common)
         feedsInto(targets.allComposeUi - targets.android)
     }
-}
-
-android {
-    namespace = "org.kodein.emoji.compose"
 }
 
 kodeinUpload {

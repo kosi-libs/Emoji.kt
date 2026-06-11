@@ -15,10 +15,10 @@ kotlin.kodein {
         api(projects.emojiKt)
         api(projects.emojiCompose)
     }
-}
 
-android {
-    namespace = "org.kodein.emoji.compose.m3"
+    android {
+        target.namespace = "org.kodein.emoji.compose.m3"
+    }
 }
 
 kodeinUpload {
