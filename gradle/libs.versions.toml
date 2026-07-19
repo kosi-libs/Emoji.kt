@@ -2,8 +2,8 @@
 android-activityCompose = "1.13.0"      # https://developer.android.com/jetpack/androidx/releases/activity
 android-lottie = "6.7.1"                # https://github.com/airbnb/lottie-android/releases
 android-svg = "1.4"                     # https://github.com/BigBadaboom/androidsvg/releases
-compose = "1.10.3"                      # https://github.com/JetBrains/compose-multiplatform/releases
-material3 = "1.10.0-alpha05"            # https://github.com/JetBrains/compose-multiplatform/releases
+compose = "1.11.1"                      # https://github.com/JetBrains/compose-multiplatform/releases
+material3 = "1.11.0-alpha07"            # https://github.com/JetBrains/compose-multiplatform/releases
 
 [plugins]
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
