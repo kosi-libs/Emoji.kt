@@ -6,6 +6,7 @@ plugins {
 
 kotlin.kodein {
     allComposeUi()
+    macosArm64()
 
     common.mainDependencies {
         implementation(libs.compose.runtime)
