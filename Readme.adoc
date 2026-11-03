@@ -325,6 +325,10 @@ EmojiService.catalogBuilder = {
 }
 ----
 
-== Supported by
+## Developped by
 
-image::https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg[JetBrains logo.,link=https://jb.gg/OpenSourceSupport]
+[![Kodein Koders logo.](https://kodein-koders.com/app/uploads/2026/11/colored-invert.svg)](https://kodein-koders.com)
+
+## Supported by
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
