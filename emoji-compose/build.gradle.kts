@@ -7,6 +7,7 @@ plugins {
 kotlin.kodein {
     jsEnvBrowserOnly()
     allComposeUi()
+    macosArm64()
 
     common.mainDependencies {
         implementation(libs.compose.runtime)
@@ -25,7 +26,7 @@ kotlin.kodein {
 
     createSources("skia") {
         dependsOn(common)
-        feedsInto(targets.allComposeUi - targets.android)
+        feedsInto(targets.allComposeUi - targets.android + targets.macosArm64)
     }
 }
 
